@@ -33,6 +33,12 @@ struct SidebarView: View {
                 }
                     .frame(minWidth: 100)
             }
+            .toolbar {
+                Button(action: {}) {
+                    Image(systemName: "arrow.clockwise.circle")
+                        .accessibilityLabel("Reload Packages")
+                }
+            }
 
             VendorView()
         }
