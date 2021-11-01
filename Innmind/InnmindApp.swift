@@ -13,5 +13,8 @@ struct InnmindApp: App {
         WindowGroup {
             ContentView()
         }
+        .commands {
+            InnmindCommands()
+        }
     }
 }
