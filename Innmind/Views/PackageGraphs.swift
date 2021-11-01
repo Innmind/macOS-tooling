@@ -34,7 +34,7 @@ struct PackageGraphs: View {
         .toolbar {
             Button(action: {}) {
                 Image(systemName: "arrow.clockwise.circle")
-                    .accessibilityLabel("Reload")
+                    .accessibilityLabel("Reload Graph")
             }
         }
     }
