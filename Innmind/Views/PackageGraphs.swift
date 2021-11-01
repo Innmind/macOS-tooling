@@ -31,6 +31,12 @@ struct PackageGraphs: View {
                 }
                 .tag(Tab.dependencies)
         }
+        .toolbar {
+            Button(action: {}) {
+                Image(systemName: "arrow.clockwise.circle")
+                    .accessibilityLabel("Reload")
+            }
+        }
     }
 }
 /*

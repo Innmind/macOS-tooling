@@ -14,6 +14,13 @@ struct VendorView: View {
             SvgView(content: "<svg>vendor graph</svg>")
             Spacer()
         }
+        .toolbar {
+            Button(action: {}) {
+                Image(systemName: "arrow.clockwise.circle")
+                    .accessibilityLabel("Reload")
+            }
+        }
+        .navigationTitle(organization.displayName)
     }
 }
 
