@@ -25,16 +25,55 @@ final class ModelData: ObservableObject {
     }
 
     private func search(url: String) {
-        self.search = URLSession
+        self.search = self.searchPage(url: url)
+            .map {
+                $0
+                    .map { self.parse(result: $0) }
+                    .flatMap { $0 }
+                    .sorted { a, b in
+                        a.name < b.name
+                    }
+            }
+            .replaceError(with: [])
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.packages, on: self)
+    }
+
+    private func searchPage(url: String) -> AnyPublisher<[PackagistSearch], Error> {
+        return URLSession
             .shared
             .dataTaskPublisher(for: URL(string: url)!)
             .map { $0.data }
             .decode(type: PackagistSearch.self, decoder: JSONDecoder())
-            .map { self.parse(result: $0) }
+            .map { [$0] }
             .replaceError(with: [])
             .eraseToAnyPublisher()
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.packages, on: self)
+            .flatMap { results in
+                self.attemptNextPage(results: results).eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func attemptNextPage(results: [PackagistSearch]) ->AnyPublisher<[PackagistSearch], Error> {
+        if let next = results.last?.next {
+            return self
+                .searchPage(url: next)
+                .map { page in
+                    var all = results
+                    all.append(contentsOf: page)
+
+                    return all
+                }
+                .eraseToAnyPublisher()
+        } else {
+            return self.wrapResults(results: results)
+        }
+    }
+
+    private func wrapResults(results: [PackagistSearch]) -> AnyPublisher<[PackagistSearch], Error> {
+        return Just(results)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
     }
 
     private func parse(result: PackagistSearch) -> [Package] {
@@ -43,9 +82,6 @@ final class ModelData: ObservableObject {
             .filter { $0.abandoned == nil }
             .filter { $0.virtual == nil }
             .map { Package(name: String($0.name.dropFirst(self.organization.name.count + 1))) }
-            .sorted { a, b in
-                a.name < b.name
-            }
     }
 }
 
