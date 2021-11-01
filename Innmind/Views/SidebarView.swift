@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct SidebarView: View {
-    let packages: [Package]
+    let model: ModelData
 
     var body: some View {
         NavigationView {
             VStack {
                 List {
-                    NavigationLink(destination: VendorView()) {
+                    NavigationLink(destination: VendorView(organization: model.organization)) {
                         HStack() {
                             Text("Organization")
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                     }
-                    ForEach(packages, id: \.self) { package in
+                    ForEach(model.packages, id: \.self) { package in
                         VStack {
                             NavigationLink(
                                 destination: PackageGraphs(package: package)
@@ -40,7 +40,7 @@ struct SidebarView: View {
                 }
             }
 
-            VendorView()
+            VendorView(organization: model.organization)
         }
     }
 }
@@ -60,6 +60,6 @@ struct PackageRow: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(packages: packages)
+        SidebarView(model: ModelData())
     }
 }

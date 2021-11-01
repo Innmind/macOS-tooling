@@ -11,7 +11,7 @@ import SwiftUI
 struct InnmindApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environmentObject(ModelData())
         }
         .commands {
             InnmindCommands()

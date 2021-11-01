@@ -56,7 +56,9 @@ struct SvgView: NSViewRepresentable {
 }*/
 
 struct PackageGraphs_Previews: PreviewProvider {
+    static var model = ModelData()
+
     static var previews: some View {
-        PackageGraphs(package: packages[0])
+        PackageGraphs(package: model.packages[0])
     }
 }

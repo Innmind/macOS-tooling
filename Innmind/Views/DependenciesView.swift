@@ -23,7 +23,9 @@ struct DependenciesView: View {
 }
 
 struct DependenciesView_Previews: PreviewProvider {
+    static var model = ModelData()
+
     static var previews: some View {
-        DependenciesView(package: packages[0])
+        DependenciesView(package: model.packages[0])
     }
 }

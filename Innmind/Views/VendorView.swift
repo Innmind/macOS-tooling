@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct VendorView: View {
+    let organization: Organization
+
     var body: some View {
         VStack {
             Text(organization.displayName).font(.title)
@@ -26,6 +28,6 @@ struct VendorView: View {
 
 struct VendorView_Previews: PreviewProvider {
     static var previews: some View {
-        VendorView()
+        VendorView(organization: ModelData().organization)
     }
 }
