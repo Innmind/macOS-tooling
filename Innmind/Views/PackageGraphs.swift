@@ -9,17 +9,28 @@ import SwiftUI
 import WebKit
 
 struct PackageGraphs: View {
+    @State private var selection: Tab = .dependencies
+    
     var package: Package
     
+    enum Tab {
+        case dependencies
+        case dependents
+    }
+    
     var body: some View {
-        VStack {
-            Text("innmind/"+self.package.name).font(.title)
-            Text("tab group here for each kind of graph")
-            SvgView(content: "</svg>")
-            Spacer()
+        TabView(selection: $selection) {
+            DependenciesView(package: package)
+                .tabItem {
+                    Text("Dependencies")
+                }
+                .tag(Tab.dependencies)
+            DependentsView(package: package)
+                .tabItem {
+                    Text("Dependents")
+                }
+                .tag(Tab.dependencies)
         }
-            .padding(5)
-            .navigationTitle(self.package.name)
     }
 }
 /*

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
 		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
+		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
+		CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C29272FDEA200CFEBB2 /* DependentsView.swift */; };
 		CD21EA45272F0CDB00EF05D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD21EA44272F0CDB00EF05D5 /* WebKit.framework */; platformFilters = (maccatalyst, macos, ); };
 		CD5D132D272EADCC00944E3F /* InnmindApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D132C272EADCC00944E3F /* InnmindApp.swift */; };
 		CD5D132F272EADCC00944E3F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D132E272EADCC00944E3F /* ContentView.swift */; };
@@ -45,6 +47,8 @@
 /* Begin PBXFileReference section */
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
 		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
+		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
+		CD127C29272FDEA200CFEBB2 /* DependentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentsView.swift; sourceTree = "<group>"; };
 		CD21EA44272F0CDB00EF05D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CD5D1329272EADCC00944E3F /* Innmind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Innmind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5D132C272EADCC00944E3F /* InnmindApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindApp.swift; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 				CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */,
 				CD8A9655272EE33000C5FF56 /* VendorView.swift */,
 				CD127C23272FDA7500CFEBB2 /* SvgView.swift */,
+				CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */,
+				CD127C29272FDEA200CFEBB2 /* DependentsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -329,6 +335,8 @@
 				CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */,
 				CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */,
 				CD5D132D272EADCC00944E3F /* InnmindApp.swift in Sources */,
+				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
+				CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
