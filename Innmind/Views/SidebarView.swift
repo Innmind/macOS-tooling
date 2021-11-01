@@ -33,6 +33,8 @@ struct SidebarView: View {
                 }
                     .frame(minWidth: 100)
             }
+
+            VendorView()
         }
     }
 }
