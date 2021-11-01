@@ -8,6 +8,7 @@
 import Foundation
 
 var packages: [Package] = load("packages.json")
+var organization = Organization(displayName: "Innmind", name: "innmind")
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data

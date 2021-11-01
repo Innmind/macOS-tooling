@@ -10,7 +10,7 @@ import SwiftUI
 struct VendorView: View {
     var body: some View {
         VStack {
-            Text("Innmind").font(.title)
+            Text(organization.displayName).font(.title)
             SvgView(content: "<svg>vendor graph</svg>")
             Spacer()
         }
