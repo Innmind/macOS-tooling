@@ -31,7 +31,7 @@ struct SidebarView: View {
                         }
                     }
                 }
-                    .frame(minWidth: 100)
+                    .frame(minWidth: 200)
             }
             .toolbar {
                 Button(action: {}) {
