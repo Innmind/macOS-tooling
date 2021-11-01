@@ -11,7 +11,7 @@ struct VendorView: View {
     var body: some View {
         VStack {
             Text("Innmind").font(.title)
-            Text("vendor graph here")
+            SvgView(content: "<svg>vendor graph</svg>")
             Spacer()
         }
     }
