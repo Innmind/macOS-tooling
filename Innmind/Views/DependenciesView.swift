@@ -12,10 +12,7 @@ struct DependenciesView: View {
     
     var body: some View {
         VStack {
-            Text("Dependencies")
-            Text("innmind/"+self.package.name).font(.title)
             SvgView(content: "</svg>")
-            Spacer()
         }
             .padding(5)
             .navigationTitle(self.package.name)

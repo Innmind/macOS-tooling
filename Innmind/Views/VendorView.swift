@@ -12,9 +12,7 @@ struct VendorView: View {
 
     var body: some View {
         VStack {
-            Text(organization.displayName).font(.title)
             SvgView(content: "<svg>vendor graph</svg>")
-            Spacer()
         }
         .toolbar {
             Button(action: {}) {

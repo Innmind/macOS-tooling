@@ -39,21 +39,6 @@ struct PackageGraphs: View {
         }
     }
 }
-/*
-struct SvgView: NSViewRepresentable {
-    var content: String
-
-    func makeNSView(context: NSViewRepresentableContext<SvgView>) -> WKWebView {
-        let svg = WKWebView()
-        //svg.load(URLRequest(url: URL(string: "data:image/svg;base64,"+content)!))
-
-        return svg
-    }
-
-    public func updateNSView(_ nsView: WKWebView, context: NSViewRepresentableContext<SvgView>) {
-        nsView.load(URLRequest(url: URL(string: "https://github.com")!))
-    }
-}*/
 
 struct PackageGraphs_Previews: PreviewProvider {
     static var model = ModelData()
