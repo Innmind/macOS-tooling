@@ -25,14 +25,23 @@ struct SidebarView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                     }
-                    ForEach(packages) { package in
-                        VStack {
-                            NavigationLink(
-                                destination: PackageGraphs(package: package)
-                            ) {
-                                PackageRow(package: package)
+                    if !model.loading {
+                        ForEach(packages) { package in
+                            VStack {
+                                NavigationLink(
+                                    destination: PackageGraphs(package: package)
+                                ) {
+                                    PackageRow(package: package)
+                                }
                             }
                         }
+                    } else {
+                        HStack() {
+                            Image(systemName: "arrow.triangle.2.circlepath.circle")
+                            Text("Loading...")
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
                     }
                 }
                     .frame(minWidth: 200)

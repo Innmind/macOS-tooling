@@ -10,17 +10,25 @@ import Combine
 
 final class ModelData: ObservableObject {
     @Published var organization = Organization(displayName: "Innmind", name: "innmind")
-    @Published var packages: [Package] = load("packages.json")
+    @Published var packages: [Package] = [] {
+        didSet {
+            loading = false
+        }
+    }
+    @Published var loading = false
 
     private var search: AnyCancellable?
 
+    init() {
+        loadPackages()
+    }
+
     func reloadPackages() {
-        // todo load from packagist
-        packages = []
         loadPackages()
     }
 
     private func loadPackages() {
+        loading = true
         self.search(url: "https://packagist.org/search.json?q="+organization.name+"/")
     }
 
