@@ -11,7 +11,8 @@ struct ContentView: View {
     @EnvironmentObject var model: ModelData
 
     var body: some View {
-        SidebarView(model: model)
+        SidebarView()
+            .environmentObject(model)
             .frame(minWidth: 600, minHeight: 400)
     }
 }

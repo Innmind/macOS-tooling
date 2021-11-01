@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct SidebarView: View {
-    let model: ModelData
+    @EnvironmentObject var model: ModelData
+
+    var packages: [Package] {
+        model.packages
+    }
 
     var body: some View {
         NavigationView {
@@ -21,7 +25,7 @@ struct SidebarView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                     }
-                    ForEach(model.packages, id: \.self) { package in
+                    ForEach(packages, id: \.self) { package in
                         VStack {
                             NavigationLink(
                                 destination: PackageGraphs(package: package)
@@ -34,7 +38,9 @@ struct SidebarView: View {
                     .frame(minWidth: 200)
             }
             .toolbar {
-                Button(action: {}) {
+                Button(action: {
+                    model.reloadPackages()
+                }) {
                     Image(systemName: "arrow.clockwise.circle")
                         .accessibilityLabel("Reload Packages")
                 }
@@ -60,6 +66,6 @@ struct PackageRow: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(model: ModelData())
+        SidebarView().environmentObject(ModelData())
     }
 }

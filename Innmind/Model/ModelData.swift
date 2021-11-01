@@ -11,6 +11,11 @@ import Combine
 final class ModelData: ObservableObject {
     @Published var packages: [Package] = load("packages.json")
     @Published var organization = Organization(displayName: "Innmind", name: "innmind")
+
+    func reloadPackages() {
+        // todo load from packagist
+        packages = []
+    }
 }
 
 func load<T: Decodable>(_ filename: String) -> T {
