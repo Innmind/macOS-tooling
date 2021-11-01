@@ -7,6 +7,7 @@
 
 import Foundation
 
-struct Package: Hashable, Codable {
+struct Package: Hashable, Codable, Identifiable {
     var name: String
+    var id: Package { self }
 }

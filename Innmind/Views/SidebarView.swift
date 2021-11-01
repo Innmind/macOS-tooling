@@ -25,7 +25,7 @@ struct SidebarView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                     }
-                    ForEach(packages, id: \.self) { package in
+                    ForEach(packages) { package in
                         VStack {
                             NavigationLink(
                                 destination: PackageGraphs(package: package)
