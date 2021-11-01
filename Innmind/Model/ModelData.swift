@@ -12,6 +12,8 @@ final class ModelData: ObservableObject {
     @Published var organization = Organization(displayName: "Innmind", name: "innmind")
     @Published var packages: [Package] = load("packages.json")
 
+    private var search: AnyCancellable?
+
     func reloadPackages() {
         // todo load from packagist
         packages = []
@@ -19,41 +21,28 @@ final class ModelData: ObservableObject {
     }
 
     private func loadPackages() {
-        let results: [PackagistSearch] = []
-        self.search(url: "https://packagist.org/search.json?q="+organization.name+"/", searches: results)
+        self.search(url: "https://packagist.org/search.json?q="+organization.name+"/")
     }
 
-    private func search(url: String, searches: [PackagistSearch]) {
-        let task = URLSession.shared.dataTask(with: URL(string: url)!) {(data, response, error) in
-            guard let data = data else { return }
-            var results = searches
-            let decoder = JSONDecoder()
-
-            do {
-                let result = try decoder.decode(PackagistSearch.self, from: data)
-                results.append(result)
-
-                if (result.next != nil) {
-                    self.search(url: result.next!, searches: results)
-                } else {
-                    self.putPackages(results: results)
-                }
-            } catch {
-                return
-            }
-        }
-
-        task.resume()
+    private func search(url: String) {
+        self.search = URLSession
+            .shared
+            .dataTaskPublisher(for: URL(string: url)!)
+            .map { $0.data }
+            .decode(type: PackagistSearch.self, decoder: JSONDecoder())
+            .map { self.parse(result: $0) }
+            .replaceError(with: [])
+            .eraseToAnyPublisher()
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.packages, on: self)
     }
 
-    private func putPackages(results: [PackagistSearch]) {
-        var packages: [PackagistSearch.Result] = []
-        results.forEach {
-            packages.append(contentsOf: $0.results)
-        }
-        self.packages = packages
+    private func parse(result: PackagistSearch) -> [Package] {
+        return result.results
+            .filter { $0.name.starts(with: self.organization.name) }
             .filter { $0.abandoned == nil }
-            .map { Package(name: String($0.name.dropFirst(organization.name.count + 1))) }
+            .filter { $0.virtual == nil }
+            .map { Package(name: String($0.name.dropFirst(self.organization.name.count + 1))) }
             .sorted { a, b in
                 a.name < b.name
             }
