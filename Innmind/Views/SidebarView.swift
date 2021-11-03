@@ -48,6 +48,12 @@ struct SidebarView: View {
             }
             .toolbar {
                 Button(action: {
+                    NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+                }) {
+                    Image(systemName: "sidebar.left")
+                        .accessibilityLabel("Toggle Sidebar")
+                }
+                Button(action: {
                     model.reloadPackages()
                 }) {
                     Image(systemName: "arrow.clockwise.circle")
