@@ -16,15 +16,19 @@ struct SidebarView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                List {
-                    NavigationLink(destination: VendorView(organization: model.organization)) {
-                        HStack() {
-                            Text("Organization")
-                        }
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
+            List {
+                NavigationLink(destination: VendorView(organization: model.organization)) {
+                    HStack() {
+                        Text("Organization")
                     }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                }
+                Section(
+                    header: Text("Packages")
+                        .padding(.bottom, 10)
+                        .font(.headline)
+                ) {
                     if !model.loading {
                         ForEach(packages) { package in
                             VStack {
@@ -44,8 +48,8 @@ struct SidebarView: View {
                         .padding(.vertical, 5)
                     }
                 }
-                    .frame(minWidth: 200)
             }
+            .frame(minWidth: 200)
             .toolbar {
                 Button(action: {
                     NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
