@@ -48,8 +48,9 @@ final class ModelData: ObservableObject {
     }
 
     private func searchPage(url: String) -> AnyPublisher<[PackagistSearch], Error> {
-        return URLSession
-            .shared
+        let session = URLSession(configuration: .ephemeral)
+
+        return session
             .dataTaskPublisher(for: URL(string: url)!)
             .map { $0.data }
             .decode(type: PackagistSearch.self, decoder: JSONDecoder())
