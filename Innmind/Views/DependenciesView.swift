@@ -32,6 +32,10 @@ struct DependenciesView_Previews: PreviewProvider {
     static var model = ModelData()
 
     static var previews: some View {
-        DependenciesView(package: model.packages[0]).environmentObject(Svg.dependencies(Package(name: "immutable")))
+        DependenciesView(package: model.packages[0])
+            .environmentObject(Svg.dependencies(
+                Organization(displayName: "Innmind", name: "inn"),
+                Package(name: "immutable")
+            ))
     }
 }

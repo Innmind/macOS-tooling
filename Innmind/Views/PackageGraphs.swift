@@ -10,7 +10,8 @@ import WebKit
 
 struct PackageGraphs: View {
     @State private var selection: Tab = .dependencies
-    
+
+    var organization: Organization
     var package: Package
     
     enum Tab {
@@ -21,13 +22,13 @@ struct PackageGraphs: View {
     var body: some View {
         TabView(selection: $selection) {
             DependenciesView(package: package)
-                .environmentObject(Svg.dependencies(package))
+                .environmentObject(Svg.dependencies(organization, package))
                 .tabItem {
                     Text("Dependencies")
                 }
                 .tag(Tab.dependencies)
             DependentsView(package: package)
-                .environmentObject(Svg.dependents(package))
+                .environmentObject(Svg.dependents(organization, package))
                 .tabItem {
                     Text("Dependents")
                 }
@@ -46,6 +47,6 @@ struct PackageGraphs_Previews: PreviewProvider {
     static var model = ModelData()
 
     static var previews: some View {
-        PackageGraphs(package: model.packages[0])
+        PackageGraphs(organization: model.organization, package: model.packages[0])
     }
 }

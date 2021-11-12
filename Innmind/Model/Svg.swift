@@ -15,8 +15,8 @@ final class Svg: ObservableObject {
     }
     @Published var loading = true
 
-    private init() {
-        Shell.run("export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && cat $(dependency-graph of innmind/immutable)", callback: { [self] svg in
+    private init(_ action: String) {
+        Shell.run("export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && cat $(dependency-graph \(action))", callback: { [self] svg in
             DispatchQueue.main.async {
                 self.content = svg
             }
@@ -24,14 +24,14 @@ final class Svg: ObservableObject {
     }
 
     static func organization(_ organization: Organization) -> Svg {
-        return .init()
+        return .init("vendor \(organization.name)")
     }
 
-    static func dependencies(_ dependencies: Package) -> Svg {
-        return .init()
+    static func dependencies(_ organization: Organization, _ dependencies: Package) -> Svg {
+        return .init("of \(organization.name)/\(dependencies.name)")
     }
 
-    static func dependents(_ dependencies: Package) -> Svg {
-        return .init()
+    static func dependents(_ organization: Organization, _ dependents: Package) -> Svg {
+        return .init("depends-on \(organization.name)/\(dependents.name) \(organization.name)")
     }
 }

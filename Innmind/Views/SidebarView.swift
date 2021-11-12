@@ -35,7 +35,7 @@ struct SidebarView: View {
                         ForEach(packages) { package in
                             VStack {
                                 NavigationLink(
-                                    destination: PackageGraphs(package: package)
+                                    destination: PackageGraphs(organization: model.organization, package: package)
                                 ) {
                                     PackageRow(package: package)
                                 }
