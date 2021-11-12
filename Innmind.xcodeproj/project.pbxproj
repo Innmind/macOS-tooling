@@ -27,6 +27,8 @@
 		CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9651272EDF6100C5FF56 /* SidebarView.swift */; };
 		CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */; };
 		CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9655272EE33000C5FF56 /* VendorView.swift */; };
+		CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B2273EA17A005C9ADA /* Svg.swift */; };
+		CD8F91B5273EA6A3005C9ADA /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B4273EA6A3005C9ADA /* Shell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		CD8A9651272EDF6100C5FF56 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageGraphs.swift; sourceTree = "<group>"; };
 		CD8A9655272EE33000C5FF56 /* VendorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorView.swift; sourceTree = "<group>"; };
+		CD8F91B2273EA17A005C9ADA /* Svg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Svg.swift; sourceTree = "<group>"; };
+		CD8F91B4273EA6A3005C9ADA /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +135,7 @@
 		CD5D132B272EADCC00944E3F /* Innmind */ = {
 			isa = PBXGroup;
 			children = (
+				CD8F91AF273E98DC005C9ADA /* Infrastructure */,
 				CD5D132C272EADCC00944E3F /* InnmindApp.swift */,
 				CD8A9650272EDF0100C5FF56 /* Views */,
 				CD5D1330272EADCD00944E3F /* Assets.xcassets */,
@@ -183,6 +188,7 @@
 				CD8A964B272EDE0D00C5FF56 /* ModelData.swift */,
 				CD127C25272FDB8C00CFEBB2 /* Organization.swift */,
 				CD127C2D2730200800CFEBB2 /* PackagistSearch.swift */,
+				CD8F91B2273EA17A005C9ADA /* Svg.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +205,14 @@
 				CD127C29272FDEA200CFEBB2 /* DependentsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		CD8F91AF273E98DC005C9ADA /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				CD8F91B4273EA6A3005C9ADA /* Shell.swift */,
+			);
+			path = Infrastructure;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +351,7 @@
 				CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */,
 				CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */,
 				CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */,
+				CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */,
 				CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */,
 				CD5D132F272EADCC00944E3F /* ContentView.swift in Sources */,
 				CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */,
@@ -345,6 +360,7 @@
 				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
 				CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */,
 				CD127C2E2730200800CFEBB2 /* PackagistSearch.swift in Sources */,
+				CD8F91B5273EA6A3005C9ADA /* Shell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,8 +16,10 @@ struct SidebarView: View {
 
     var body: some View {
         NavigationView {
+            let vendor = VendorView(organization: model.organization).environmentObject(Svg(with: model.organization))
+
             List {
-                NavigationLink(destination: VendorView(organization: model.organization)) {
+                NavigationLink(destination: vendor) {
                     HStack() {
                         Text("Organization")
                     }
@@ -65,7 +67,7 @@ struct SidebarView: View {
                 }
             }
 
-            VendorView(organization: model.organization)
+            vendor
         }
     }
 }

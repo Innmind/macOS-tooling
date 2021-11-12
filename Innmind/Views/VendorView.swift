@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct VendorView: View {
+    @EnvironmentObject var svg: Svg
+
     let organization: Organization
 
     var body: some View {
         VStack {
-            SvgView(content: "<svg>vendor graph</svg>")
+            if (svg.loading) {
+                HStack() {
+                    Image(systemName: "arrow.triangle.2.circlepath.circle")
+                    Text("Loading...")
+                }
+            } else {
+                SvgView(content: svg.content!)
+            }
         }
         .toolbar {
             Button(action: {}) {
@@ -26,6 +35,6 @@ struct VendorView: View {
 
 struct VendorView_Previews: PreviewProvider {
     static var previews: some View {
-        VendorView(organization: ModelData().organization)
+        VendorView(organization: ModelData().organization).environmentObject(Svg(with: Organization(displayName: "Innmind", name: "innmind")))
     }
 }
