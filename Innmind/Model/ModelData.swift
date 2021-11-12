@@ -88,7 +88,7 @@ final class ModelData: ObservableObject {
     private func parse(result: PackagistSearch) -> [Package] {
         return result.results
             .filter { $0.name.starts(with: self.organization.name) }
-            .filter { $0.abandoned == nil }
+            .filter { $0.abandoned == PackagistSearch.Abandoned.bool(false) || $0.abandoned == nil }
             .filter { $0.virtual == nil }
             .map { Package(name: String($0.name.dropFirst(self.organization.name.count + 1))) }
     }
