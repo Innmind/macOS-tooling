@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct DependentsView: View {
+    @EnvironmentObject var svg: Svg
+
     var package: Package
     
     var body: some View {
         VStack {
-            SvgView(content: "</svg>")
+            if (svg.loading) {
+                HStack() {
+                    Image(systemName: "arrow.triangle.2.circlepath.circle")
+                    Text("Loading...")
+                }
+            } else {
+                SvgView(content: svg.content!)
+            }
         }
             .padding(5)
             .navigationTitle(self.package.name)

@@ -16,7 +16,7 @@ struct SidebarView: View {
 
     var body: some View {
         NavigationView {
-            let vendor = VendorView(organization: model.organization).environmentObject(Svg(with: model.organization))
+            let vendor = VendorView(organization: model.organization).environmentObject(Svg.organization(model.organization))
 
             List {
                 NavigationLink(destination: vendor) {

@@ -21,11 +21,13 @@ struct PackageGraphs: View {
     var body: some View {
         TabView(selection: $selection) {
             DependenciesView(package: package)
+                .environmentObject(Svg.dependencies(package))
                 .tabItem {
                     Text("Dependencies")
                 }
                 .tag(Tab.dependencies)
             DependentsView(package: package)
+                .environmentObject(Svg.dependents(package))
                 .tabItem {
                     Text("Dependents")
                 }

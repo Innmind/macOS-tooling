@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct DependenciesView: View {
+    @EnvironmentObject var svg: Svg
+
     var package: Package
     
     var body: some View {
         VStack {
-            SvgView(content: "</svg>")
+            if (svg.loading) {
+                HStack() {
+                    Image(systemName: "arrow.triangle.2.circlepath.circle")
+                    Text("Loading...")
+                }
+            } else {
+                SvgView(content: svg.content!)
+            }
         }
             .padding(5)
             .navigationTitle(self.package.name)
@@ -23,6 +32,6 @@ struct DependenciesView_Previews: PreviewProvider {
     static var model = ModelData()
 
     static var previews: some View {
-        DependenciesView(package: model.packages[0])
+        DependenciesView(package: model.packages[0]).environmentObject(Svg.dependencies(Package(name: "immutable")))
     }
 }

@@ -35,6 +35,6 @@ struct VendorView: View {
 
 struct VendorView_Previews: PreviewProvider {
     static var previews: some View {
-        VendorView(organization: ModelData().organization).environmentObject(Svg(with: Organization(displayName: "Innmind", name: "innmind")))
+        VendorView(organization: ModelData().organization).environmentObject(Svg.organization(Organization(displayName: "Innmind", name: "innmind")))
     }
 }
