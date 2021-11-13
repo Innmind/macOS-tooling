@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD024605273FF71100C4E1E7 /* Zoom.swift */; };
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
 		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
 		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CD024605273FF71100C4E1E7 /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
 		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				CD127C25272FDB8C00CFEBB2 /* Organization.swift */,
 				CD127C2D2730200800CFEBB2 /* PackagistSearch.swift */,
 				CD8F91B2273EA17A005C9ADA /* Svg.swift */,
+				CD024605273FF71100C4E1E7 /* Zoom.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				CD5D132F272EADCC00944E3F /* ContentView.swift in Sources */,
 				CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */,
 				CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */,
+				CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */,
 				CD5D132D272EADCC00944E3F /* InnmindApp.swift in Sources */,
 				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
 				CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */,

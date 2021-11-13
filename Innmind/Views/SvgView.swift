@@ -10,20 +10,18 @@ import WebKit
 
 struct SvgView: View {
     var content: Data
-
-    init(content: Data) {
-        self.content = content
-    }
+    @Binding var zoom: Zoom
 
     var body: some View {
         VStack {
-            SvgWebView(content: content)
+            SvgWebView(content: content, zoom: zoom)
         }
     }
 }
 
 struct SvgWebView: NSViewRepresentable {
     var content: Data
+    var zoom: Zoom
 
     func makeNSView(context: NSViewRepresentableContext<SvgWebView>) -> WKWebView {
         return WKWebView()
@@ -32,12 +30,13 @@ struct SvgWebView: NSViewRepresentable {
     public func updateNSView(_ nsView: WKWebView, context: NSViewRepresentableContext<SvgWebView>) {
         nsView.allowsMagnification = true
         nsView.allowsBackForwardNavigationGestures = true
+        nsView.pageZoom = zoom.toCGFloat()
         nsView.loadHTMLString(String(decoding: content, as: UTF8.self), baseURL: URL(string: "http://localhost/"))
     }
 }
 
 struct SvgView_Previews: PreviewProvider {
     static var previews: some View {
-        SvgView(content: "</svg>".data(using: .utf8)!)
+        SvgView(content: "</svg>".data(using: .utf8)!, zoom: .constant(.max))
     }
 }

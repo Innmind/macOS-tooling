@@ -11,6 +11,7 @@ struct DependenciesView: View {
     @EnvironmentObject var svg: Svg
 
     var package: Package
+    @Binding var zoom: Zoom
     
     var body: some View {
         VStack {
@@ -20,7 +21,7 @@ struct DependenciesView: View {
                     Text("Loading...")
                 }
             } else {
-                SvgView(content: svg.content!)
+                SvgView(content: svg.content!, zoom: $zoom)
             }
         }
             .padding(5)
@@ -32,7 +33,7 @@ struct DependenciesView_Previews: PreviewProvider {
     static var model = ModelData()
 
     static var previews: some View {
-        DependenciesView(package: model.packages[0])
+        DependenciesView(package: model.packages[0], zoom: .constant(.max))
             .environmentObject(Svg.dependencies(
                 Organization(displayName: "Innmind", name: "inn"),
                 Package(name: "immutable")
