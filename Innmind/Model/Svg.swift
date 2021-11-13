@@ -8,12 +8,7 @@
 import Foundation
 
 final class Svg: ObservableObject {
-    @Published var content: Data? {
-        didSet {
-            loading = false
-        }
-    }
-    @Published var loading = true
+    @Published var content: Data?
     private let action: String
 
     private init(_ action: String) {
@@ -31,6 +26,11 @@ final class Svg: ObservableObject {
 
     static func dependents(_ organization: Organization, _ dependents: Package) -> Svg {
         return .init("depends-on \(organization.name)/\(dependents.name) \(organization.name)")
+    }
+
+    func reload() {
+        content = nil
+        load(action)
     }
 
     private func load(_ action: String) {

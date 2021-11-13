@@ -15,12 +15,13 @@ struct DependentsView: View {
     
     var body: some View {
         VStack {
-            if (svg.loading) {
+            switch svg.content {
+            case nil:
                 HStack() {
                     Image(systemName: "arrow.triangle.2.circlepath.circle")
                     Text("Loading...")
                 }
-            } else {
+            default:
                 SvgView(content: svg.content!, zoom: $zoom)
             }
         }

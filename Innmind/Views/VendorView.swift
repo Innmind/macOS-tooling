@@ -15,12 +15,13 @@ struct VendorView: View {
 
     var body: some View {
         VStack {
-            if (svg.loading) {
+            switch svg.content {
+            case nil:
                 HStack() {
                     Image(systemName: "arrow.triangle.2.circlepath.circle")
                     Text("Loading...")
                 }
-            } else {
+            default:
                 SvgView(content: svg.content!, zoom: $zoom)
             }
         }
@@ -31,7 +32,9 @@ struct VendorView: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
-            Button(action: {}) {
+            Button(action: {
+                svg.reload()
+            }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }

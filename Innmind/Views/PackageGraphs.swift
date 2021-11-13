@@ -14,22 +14,31 @@ struct PackageGraphs: View {
     var organization: Organization
     var package: Package
     @State private var zoom: Zoom = .max
+    private var dependencies: Svg
+    private var dependents: Svg
     
     enum Tab {
         case dependencies
         case dependents
     }
+
+    init(organization: Organization, package: Package) {
+        self.organization = organization
+        self.package = package
+        dependencies = Svg.dependencies(organization, package)
+        dependents = Svg.dependents(organization, package)
+    }
     
     var body: some View {
         TabView(selection: $selection) {
             DependenciesView(package: package, zoom: $zoom)
-                .environmentObject(Svg.dependencies(organization, package))
+                .environmentObject(dependencies)
                 .tabItem {
                     Text("Dependencies")
                 }
                 .tag(Tab.dependencies)
             DependentsView(package: package, zoom: $zoom)
-                .environmentObject(Svg.dependents(organization, package))
+                .environmentObject(dependents)
                 .tabItem {
                     Text("Dependents")
                 }
@@ -42,7 +51,14 @@ struct PackageGraphs: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
-            Button(action: {}) {
+            Button(action: {
+                switch selection {
+                case .dependencies:
+                    dependencies.reload()
+                case .dependents:
+                    dependents.reload()
+                }
+            }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }
