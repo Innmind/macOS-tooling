@@ -25,7 +25,6 @@ struct DependenciesView: View {
                 SvgView(content: svg.content!, zoom: $zoom)
             }
         }
-            .padding(5)
             .navigationTitle(self.package.name)
     }
 }

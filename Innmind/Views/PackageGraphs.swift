@@ -30,21 +30,22 @@ struct PackageGraphs: View {
     }
     
     var body: some View {
-        TabView(selection: $selection) {
-            DependenciesView(package: package, zoom: $zoom)
-                .environmentObject(dependencies)
-                .tabItem {
-                    Text("Dependencies")
-                }
-                .tag(Tab.dependencies)
-            DependentsView(package: package, zoom: $zoom)
-                .environmentObject(dependents)
-                .tabItem {
-                    Text("Dependents")
-                }
-                .tag(Tab.dependencies)
+        VStack {
+            switch selection {
+            case .dependencies:
+                DependenciesView(package: package, zoom: $zoom)
+                    .environmentObject(dependencies)
+            case .dependents:
+                DependentsView(package: package, zoom: $zoom)
+                    .environmentObject(dependents)
+            }
         }
         .toolbar {
+            Picker("", selection: $selection) {
+                Text("Dependencies").tag(Tab.dependencies)
+                Text("Dependents").tag(Tab.dependents)
+            }
+                .pickerStyle(SegmentedPickerStyle())
             Picker("", selection: $zoom) {
                 Text(Zoom.min.name()).tag(Zoom.min)
                 Text(Zoom.middle.name()).tag(Zoom.middle)
