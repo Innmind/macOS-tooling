@@ -14,13 +14,11 @@ final class Svg: ObservableObject {
         }
     }
     @Published var loading = true
+    private let action: String
 
     private init(_ action: String) {
-        Shell.run("export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && dependency-graph \(action)", callback: { [self] svg in
-            DispatchQueue.main.async {
-                self.content = svg
-            }
-        })
+        self.action = "export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && dependency-graph \(action)"
+        load(action)
     }
 
     static func organization(_ organization: Organization) -> Svg {
@@ -33,5 +31,13 @@ final class Svg: ObservableObject {
 
     static func dependents(_ organization: Organization, _ dependents: Package) -> Svg {
         return .init("depends-on \(organization.name)/\(dependents.name) \(organization.name)")
+    }
+
+    private func load(_ action: String) {
+        Shell.run(self.action, callback: { [self] svg in
+            DispatchQueue.main.async {
+                self.content = svg
+            }
+        })
     }
 }
