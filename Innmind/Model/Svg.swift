@@ -8,7 +8,7 @@
 import Foundation
 
 final class Svg: ObservableObject {
-    @Published var content: String? {
+    @Published var content: Data? {
         didSet {
             loading = false
         }
@@ -16,7 +16,7 @@ final class Svg: ObservableObject {
     @Published var loading = true
 
     private init(_ action: String) {
-        Shell.run("export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && cat $(dependency-graph \(action))", callback: { [self] svg in
+        Shell.run("export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && dependency-graph \(action)", callback: { [self] svg in
             DispatchQueue.main.async {
                 self.content = svg
             }
