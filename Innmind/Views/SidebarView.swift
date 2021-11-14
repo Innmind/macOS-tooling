@@ -55,12 +55,9 @@ struct SidebarView: View {
                             }
                         }
                     } else {
-                        HStack() {
-                            Image(systemName: "arrow.triangle.2.circlepath.circle")
-                            Text("Loading...")
-                        }
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
+                        LoadingView()
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
                     }
                 }
             }

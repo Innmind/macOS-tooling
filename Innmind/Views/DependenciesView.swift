@@ -17,13 +17,10 @@ struct DependenciesView: View {
         VStack {
             switch self.svg.content {
             case nil:
-                HStack() {
-                    Image(systemName: "arrow.triangle.2.circlepath.circle")
-                    Text("Loading...")
-                }
-                .onAppear {
-                    disableModifiers = true
-                }
+                LoadingView()
+                    .onAppear {
+                        disableModifiers = true
+                    }
             default:
                 SvgView(content: self.svg.content!, zoom: $zoom)
                     .onAppear {
