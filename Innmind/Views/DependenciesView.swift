@@ -25,6 +25,9 @@ struct DependenciesView: View {
             }
         }
             .navigationTitle(self.svg.name)
+            .onAppear {
+                self.svg.load()
+            }
     }
 }
 

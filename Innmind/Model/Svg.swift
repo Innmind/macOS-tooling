@@ -21,8 +21,7 @@ final class Svg: ObservableObject {
         self.name = name
         self.action = "export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && dependency-graph \(action)"
         self.entity = entity
-        self.content = entity?.content // if it's not empty then load() won't do anything
-        load(self.action, self.entity)
+        self.content = entity?.content
     }
 
     static func organization(_ organization: Organization, _ entity: StoredSvg? = nil) -> Svg {
@@ -37,12 +36,16 @@ final class Svg: ObservableObject {
         return .init(dependents.name!, "depends-on \(organization.name)/\(dependents.name!) \(organization.name)", dependents.dependents)
     }
 
-    func reload() {
-        content = nil
-        load(action, entity)
+    func load() {
+        fetch(action, entity)
     }
 
-    private func load(_ action: String, _ entity: StoredSvg?) {
+    func reload() {
+        content = nil
+        fetch(action, entity)
+    }
+
+    private func fetch(_ action: String, _ entity: StoredSvg?) {
         if (content != nil) {
             return
         }

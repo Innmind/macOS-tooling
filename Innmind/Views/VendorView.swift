@@ -39,6 +39,9 @@ struct VendorView: View {
             }
         }
         .navigationTitle(self.svg.name)
+        .onAppear {
+            self.svg.load()
+        }
     }
 }
 
