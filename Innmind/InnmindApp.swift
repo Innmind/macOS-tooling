@@ -9,12 +9,31 @@ import SwiftUI
 
 @main
 struct InnmindApp: App {
+    let persistence = Persistence.shared
+
+    @Environment(\.scenePhase) var scenePhase
+
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(ModelData())
+            ContentView()
+                .environment(\.managedObjectContext, persistence.container.viewContext)
+                .environmentObject(ModelData(persistence))
         }
         .commands {
             InnmindCommands()
+        }
+        .onChange(of: scenePhase) { (newScenePhase) in
+            switch newScenePhase {
+            case .background:
+                print("background")
+                persistence.save()
+            case .inactive:
+                print("inactive")
+            case .active:
+                print("active")
+            @unknown default:
+                print("default")
+            }
         }
     }
 }

@@ -11,8 +11,6 @@ import WebKit
 struct PackageGraphs: View {
     @State private var selection: Tab = .dependencies
 
-    var organization: Organization
-    var package: Package
     @State private var zoom: Zoom = .max
     private var dependencies: Svg
     private var dependents: Svg
@@ -22,9 +20,7 @@ struct PackageGraphs: View {
         case dependents
     }
 
-    init(organization: Organization, package: Package) {
-        self.organization = organization
-        self.package = package
+    init(organization: Organization, package: StoredPackage) {
         dependencies = Svg.dependencies(organization, package)
         dependents = Svg.dependents(organization, package)
     }
@@ -33,10 +29,10 @@ struct PackageGraphs: View {
         VStack {
             switch selection {
             case .dependencies:
-                DependenciesView(package: package, zoom: $zoom)
+                DependenciesView(zoom: $zoom)
                     .environmentObject(dependencies)
             case .dependents:
-                DependentsView(package: package, zoom: $zoom)
+                DependentsView(zoom: $zoom)
                     .environmentObject(dependents)
             }
         }
@@ -68,9 +64,10 @@ struct PackageGraphs: View {
 }
 
 struct PackageGraphs_Previews: PreviewProvider {
-    static var model = ModelData()
+    static var model = ModelData(Persistence.shared)
+    static var package = StoredPackage()
 
     static var previews: some View {
-        PackageGraphs(organization: model.organization, package: model.packages[0])
+        PackageGraphs(organization: model.organization, package: package)
     }
 }

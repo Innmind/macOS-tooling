@@ -9,16 +9,30 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject var model: ModelData
+    @Environment(\.managedObjectContext) var managedObjectContext
 
-    var packages: [Package] {
-        model.packages
+    @FetchRequest(
+        entity: StoredPackage.entity(),
+        sortDescriptors: [NSSortDescriptor(
+            keyPath: \StoredPackage.name,
+            ascending: true
+        )]
+    ) var storedPackages: FetchedResults<StoredPackage>
+
+    var packages: FetchedResults<StoredPackage> {
+        storedPackages
     }
 
     var body: some View {
         NavigationView {
-            let vendor = VendorView(organization: model.organization).environmentObject(Svg.organization(model.organization))
+            let vendor = VendorView()
+                .environmentObject(Svg.organization(
+                    model.organization,
+                    model.findOrganizationSvg()
+                ))
 
             List {
+                Text(String(storedPackages.count))
                 NavigationLink(destination: vendor) {
                     HStack() {
                         Text("Organization")
@@ -73,11 +87,11 @@ struct SidebarView: View {
 }
 
 struct PackageRow: View {
-    let package: Package
+    let package: StoredPackage
     
     var body: some View {
         HStack {
-            Text(package.name)
+            Text(package.name!)
             Spacer()
         }
         .padding(.vertical, 5)
@@ -87,6 +101,6 @@ struct PackageRow: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView().environmentObject(ModelData())
+        SidebarView().environmentObject(ModelData(Persistence.shared))
     }
 }
