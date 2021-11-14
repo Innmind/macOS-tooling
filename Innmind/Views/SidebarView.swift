@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject var model: ModelData
-    @Environment(\.managedObjectContext) var managedObjectContext
 
     @FetchRequest(
         entity: StoredPackage.entity(),

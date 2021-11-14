@@ -11,8 +11,6 @@ import SwiftUI
 struct InnmindApp: App {
     let persistence = Persistence.shared
 
-    @Environment(\.scenePhase) var scenePhase
-
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -21,19 +19,6 @@ struct InnmindApp: App {
         }
         .commands {
             InnmindCommands()
-        }
-        .onChange(of: scenePhase) { (newScenePhase) in
-            switch newScenePhase {
-            case .background:
-                print("background")
-                persistence.save()
-            case .inactive:
-                print("inactive")
-            case .active:
-                print("active")
-            @unknown default:
-                print("default")
-            }
         }
     }
 }
