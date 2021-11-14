@@ -11,7 +11,7 @@ struct VendorView: View {
     @EnvironmentObject var svg: Svg
 
     let organization: Organization
-    @State private var zoom: Zoom = .max
+    @State private var zoom: Zoom = .middle
 
     var body: some View {
         VStack {
