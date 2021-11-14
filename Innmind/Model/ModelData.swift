@@ -10,8 +10,9 @@ import Combine
 import CoreData
 
 final class ModelData: ObservableObject {
-    @Published var organization = Organization(displayName: "Innmind", name: "innmind")
     @Published var loading = false
+
+    let organization = Organization(displayName: "Innmind", name: "innmind")
 
     private var persistence: Persistence
     private var managedObjectContext: NSManagedObjectContext
