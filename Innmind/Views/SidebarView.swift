@@ -78,6 +78,7 @@ struct SidebarView: View {
                     Image(systemName: "arrow.clockwise.circle")
                         .accessibilityLabel("Reload Packages")
                 }
+                    .disabled(model.loading)
             }
 
             vendor

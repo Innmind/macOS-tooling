@@ -12,6 +12,7 @@ struct PackageGraphs: View {
     @State private var selection: Tab = .dependencies
 
     @State private var zoom: Zoom = .max
+    @State private var disableModifiers = false
     private var dependencies: Svg
     private var dependents: Svg
     
@@ -29,10 +30,10 @@ struct PackageGraphs: View {
         VStack {
             switch selection {
             case .dependencies:
-                DependenciesView(zoom: $zoom)
+                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom)
                     .environmentObject(dependencies)
             case .dependents:
-                DependentsView(zoom: $zoom)
+                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom)
                     .environmentObject(dependents)
             }
         }
@@ -48,6 +49,7 @@ struct PackageGraphs: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
+                .disabled(disableModifiers)
             Button(action: {
                 switch selection {
                 case .dependencies:
@@ -59,6 +61,7 @@ struct PackageGraphs: View {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }
+                .disabled(disableModifiers)
         }
     }
 }

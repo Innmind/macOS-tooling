@@ -31,12 +31,14 @@ struct VendorView: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
+                .disabled(self.svg.content == nil)
             Button(action: {
                 svg.reload()
             }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }
+                .disabled(self.svg.content == nil)
         }
         .navigationTitle(self.svg.name)
         .onAppear {
