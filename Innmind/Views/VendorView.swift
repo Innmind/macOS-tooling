@@ -10,19 +10,18 @@ import SwiftUI
 struct VendorView: View {
     @EnvironmentObject var svg: Svg
 
-    let organization: Organization
     @State private var zoom: Zoom = .middle
 
     var body: some View {
         VStack {
-            switch svg.content {
+            switch self.svg.content {
             case nil:
                 HStack() {
                     Image(systemName: "arrow.triangle.2.circlepath.circle")
                     Text("Loading...")
                 }
             default:
-                SvgView(content: svg.content!, zoom: $zoom)
+                SvgView(content: self.svg.content!, zoom: $zoom)
             }
         }
         .toolbar {
@@ -39,12 +38,12 @@ struct VendorView: View {
                     .accessibilityLabel("Reload Graph")
             }
         }
-        .navigationTitle(organization.displayName)
+        .navigationTitle(self.svg.name)
     }
 }
 
 struct VendorView_Previews: PreviewProvider {
     static var previews: some View {
-        VendorView(organization: ModelData(Persistence.shared).organization).environmentObject(Svg.organization(Organization(displayName: "Innmind", name: "innmind")))
+        VendorView().environmentObject(Svg.organization(Organization(displayName: "Innmind", name: "innmind")))
     }
 }

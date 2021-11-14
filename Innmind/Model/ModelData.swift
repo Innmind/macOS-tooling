@@ -37,6 +37,28 @@ final class ModelData: ObservableObject {
         loadPackages()
     }
 
+    func findOrganizationSvg() -> StoredSvg {
+        do {
+            let request = StoredSvg.fetchRequest()
+            request.predicate = NSPredicate(format: "organization != nil")
+            let existing = try managedObjectContext
+                .fetch(request)
+                .first
+
+            if (existing != nil) {
+                return existing!
+            }
+        } catch {
+            // let the outside scope build the default svg
+        }
+
+        let svg = StoredSvg(context: managedObjectContext)
+        svg.organization = organization.name
+        persistence.save()
+
+        return svg
+    }
+
     private func loadPackages() {
         loading = true
         self.search(url: "https://packagist.org/search.json?q="+organization.name+"/")
@@ -109,6 +131,8 @@ final class ModelData: ObservableObject {
     private func persist(_ package: Package) -> Package {
         let storedPackage = StoredPackage(context: managedObjectContext)
         storedPackage.name = package.name
+        storedPackage.dependencies = StoredSvg(context: managedObjectContext)
+        storedPackage.dependents = StoredSvg(context: managedObjectContext)
 
         return package
     }

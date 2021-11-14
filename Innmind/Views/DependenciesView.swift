@@ -10,33 +10,33 @@ import SwiftUI
 struct DependenciesView: View {
     @EnvironmentObject var svg: Svg
 
-    var package: Package
     @Binding var zoom: Zoom
     
     var body: some View {
         VStack {
-            switch svg.content {
+            switch self.svg.content {
             case nil:
                 HStack() {
                     Image(systemName: "arrow.triangle.2.circlepath.circle")
                     Text("Loading...")
                 }
             default:
-                SvgView(content: svg.content!, zoom: $zoom)
+                SvgView(content: self.svg.content!, zoom: $zoom)
             }
         }
-            .navigationTitle(self.package.name)
+            .navigationTitle(self.svg.name)
     }
 }
 
 struct DependenciesView_Previews: PreviewProvider {
     static var model = ModelData(Persistence.shared)
+    static var package = StoredPackage()
 
     static var previews: some View {
-        DependenciesView(package: .init(name: "immutable"), zoom: .constant(.max))
+        DependenciesView(zoom: .constant(.max))
             .environmentObject(Svg.dependencies(
-                Organization(displayName: "Innmind", name: "inn"),
-                Package(name: "immutable")
+                Organization(displayName: "Innmind", name: "innmind"),
+                package
             ))
     }
 }

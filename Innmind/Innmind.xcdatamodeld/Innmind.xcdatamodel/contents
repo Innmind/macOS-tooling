@@ -7,11 +7,12 @@
     </entity>
     <entity name="StoredSvg" representedClassName="StoredSvg" syncable="YES" codeGenerationType="class">
         <attribute name="content" optional="YES" attributeType="Binary"/>
+        <attribute name="organization" optional="YES" attributeType="String"/>
         <relationship name="dependsOn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredPackage" inverseName="dependents" inverseEntity="StoredPackage"/>
         <relationship name="of" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredPackage" inverseName="dependencies" inverseEntity="StoredPackage"/>
     </entity>
     <elements>
         <element name="StoredPackage" positionX="-63" positionY="-18" width="128" height="74"/>
-        <element name="StoredSvg" positionX="-63" positionY="-9" width="128" height="74"/>
+        <element name="StoredSvg" positionX="-63" positionY="-9" width="128" height="89"/>
     </elements>
 </model>

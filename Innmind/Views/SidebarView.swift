@@ -25,9 +25,14 @@ struct SidebarView: View {
 
     var body: some View {
         NavigationView {
-            let vendor = VendorView(organization: model.organization).environmentObject(Svg.organization(model.organization))
+            let vendor = VendorView()
+                .environmentObject(Svg.organization(
+                    model.organization,
+                    model.findOrganizationSvg()
+                ))
 
             List {
+                Text(String(storedPackages.count))
                 NavigationLink(destination: vendor) {
                     HStack() {
                         Text("Organization")
@@ -44,9 +49,9 @@ struct SidebarView: View {
                         ForEach(packages) { package in
                             VStack {
                                 NavigationLink(
-                                    destination: PackageGraphs(organization: model.organization, package: .init(name: package.name!))
+                                    destination: PackageGraphs(organization: model.organization, package: package)
                                 ) {
-                                    PackageRow(package: .init(name: package.name!))
+                                    PackageRow(package: package)
                                 }
                             }
                         }
@@ -82,11 +87,11 @@ struct SidebarView: View {
 }
 
 struct PackageRow: View {
-    let package: Package
+    let package: StoredPackage
     
     var body: some View {
         HStack {
-            Text(package.name)
+            Text(package.name!)
             Spacer()
         }
         .padding(.vertical, 5)
