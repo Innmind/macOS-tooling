@@ -50,11 +50,19 @@ final class Svg: ObservableObject {
             return
         }
 
-        Shell.run(self.action, callback: { [self] svg in
-            DispatchQueue.main.async {
-                self.content = svg
-                entity?.content = svg
-                Persistence.shared.save()
+        Shell.run(self.action, callback: { [self] tmpDirectory, data in
+            let file = String(decoding: data, as: UTF8.self).trimmingCharacters(in: ["\n"])
+
+            do {
+                let svg = try Data(contentsOf: URL(fileURLWithPath: tmpDirectory.appending(file)))
+
+                DispatchQueue.main.async {
+                    self.content = svg
+                    entity?.content = svg
+                    Persistence.shared.save()
+                }
+            } catch {
+                return
             }
         })
     }

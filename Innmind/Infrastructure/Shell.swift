@@ -9,7 +9,7 @@ import Foundation
 
 
 final class Shell {
-    static func run(_ command: String, callback: @escaping (Data) -> Void) {
+    static func run(_ command: String, callback: @escaping (String, Data) -> Void) {
         let process = Process()
         let output = Pipe()
         let tmpDirectory = NSTemporaryDirectory()
@@ -19,14 +19,8 @@ final class Shell {
         process.standardOutput = output
         process.terminationHandler = { [callback, output, tmpDirectory] process in
             let data = output.fileHandleForReading.readDataToEndOfFile()
-            let file = String(decoding: data, as: UTF8.self).trimmingCharacters(in: ["\n"])
 
-            do {
-                let svg = try Data(contentsOf: URL(fileURLWithPath: tmpDirectory.appending(file)))
-                callback(svg)
-            } catch {
-                return
-            }
+            callback(tmpDirectory, data)
         }
 
         do {
