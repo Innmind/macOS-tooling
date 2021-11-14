@@ -32,7 +32,6 @@ struct SidebarView: View {
                 ))
 
             List {
-                Text(String(storedPackages.count))
                 NavigationLink(destination: vendor) {
                     HStack() {
                         Text("Organization")
