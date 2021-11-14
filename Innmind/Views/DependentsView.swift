@@ -31,9 +31,9 @@ struct DependentsView: View {
 }
 
 struct DependentsView_Previews: PreviewProvider {
-    static var model = ModelData()
+    static var model = ModelData(Persistence.shared)
 
     static var previews: some View {
-        DependentsView(package: model.packages[0], zoom: .constant(.max))
+        DependentsView(package: .init(name: "immutable"), zoom: .constant(.max))
     }
 }

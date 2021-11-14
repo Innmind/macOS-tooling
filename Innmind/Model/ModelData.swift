@@ -7,23 +7,32 @@
 
 import Foundation
 import Combine
+import CoreData
 
 final class ModelData: ObservableObject {
     @Published var organization = Organization(displayName: "Innmind", name: "innmind")
-    @Published var packages: [Package] = [] {
-        didSet {
-            loading = false
-        }
-    }
     @Published var loading = false
 
+    private var persistence: Persistence
+    private var managedObjectContext: NSManagedObjectContext
     private var search: AnyCancellable?
 
-    init() {
-        loadPackages()
+    init(_ persistence: Persistence) {
+        self.persistence = persistence
+        managedObjectContext = persistence.container.viewContext
     }
 
     func reloadPackages() {
+        do {
+            try managedObjectContext
+                .fetch(StoredPackage.fetchRequest())
+                .forEach { managedObjectContext.delete($0) }
+        } catch {
+            print("failed to delete packages")
+
+            return
+        }
+
         loadPackages()
     }
 
@@ -38,13 +47,16 @@ final class ModelData: ObservableObject {
                 $0
                     .map { self.parse(result: $0) }
                     .flatMap { $0 }
-                    .sorted { a, b in
-                        a.name < b.name
-                    }
+                    .map { self.persist($0) }
             }
-            .replaceError(with: [])
+            .map { packages in
+                self.persistence.save()
+
+                return false // means it's done loading
+            }
+            .replaceError(with: false)
             .receive(on: DispatchQueue.main)
-            .assign(to: \.packages, on: self)
+            .assign(to: \.loading, on: self)
     }
 
     private func searchPage(url: String) -> AnyPublisher<[PackagistSearch], Error> {
@@ -91,6 +103,13 @@ final class ModelData: ObservableObject {
             .filter { $0.abandoned == PackagistSearch.Abandoned.bool(false) || $0.abandoned == nil }
             .filter { $0.virtual == nil }
             .map { Package(name: String($0.name.dropFirst(self.organization.name.count + 1))) }
+    }
+
+    private func persist(_ package: Package) -> Package {
+        let storedPackage = StoredPackage(context: managedObjectContext)
+        storedPackage.name = package.name
+
+        return package
     }
 }
 

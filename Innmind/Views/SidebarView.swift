@@ -9,9 +9,18 @@ import SwiftUI
 
 struct SidebarView: View {
     @EnvironmentObject var model: ModelData
+    @Environment(\.managedObjectContext) var managedObjectContext
 
-    var packages: [Package] {
-        model.packages
+    @FetchRequest(
+        entity: StoredPackage.entity(),
+        sortDescriptors: [NSSortDescriptor(
+            keyPath: \StoredPackage.name,
+            ascending: true
+        )]
+    ) var storedPackages: FetchedResults<StoredPackage>
+
+    var packages: FetchedResults<StoredPackage> {
+        storedPackages
     }
 
     var body: some View {
@@ -35,9 +44,9 @@ struct SidebarView: View {
                         ForEach(packages) { package in
                             VStack {
                                 NavigationLink(
-                                    destination: PackageGraphs(organization: model.organization, package: package)
+                                    destination: PackageGraphs(organization: model.organization, package: .init(name: package.name!))
                                 ) {
-                                    PackageRow(package: package)
+                                    PackageRow(package: .init(name: package.name!))
                                 }
                             }
                         }
@@ -87,6 +96,6 @@ struct PackageRow: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView().environmentObject(ModelData())
+        SidebarView().environmentObject(ModelData(Persistence.shared))
     }
 }
