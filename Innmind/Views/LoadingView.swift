@@ -10,7 +10,8 @@ import SwiftUI
 struct LoadingView: View {
     var body: some View {
         HStack() {
-            Image(systemName: "arrow.triangle.2.circlepath.circle")
+            ProgressView()
+                .scaleEffect(0.5)
             Text("Loading...")
         }
     }
