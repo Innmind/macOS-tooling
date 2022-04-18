@@ -15,6 +15,8 @@ struct PackageGraphs: View {
     @State private var disableModifiers = false
     private var dependencies: Svg
     private var dependents: Svg
+    private var organization: String
+    private var package: String
     
     enum Tab {
         case dependencies
@@ -24,6 +26,8 @@ struct PackageGraphs: View {
     init(organization: Organization, package: StoredPackage) {
         dependencies = Svg.dependencies(organization, package)
         dependents = Svg.dependents(organization, package)
+        self.organization = organization.name
+        self.package = package.name ?? "package-name" // coalesce for the preview
     }
     
     var body: some View {
@@ -38,6 +42,21 @@ struct PackageGraphs: View {
             }
         }
         .toolbar {
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://packagist.org/packages/"+organization+"/"+package)!)}) {
+                Text("Packagist")
+            }
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package)!)}) {
+                Text("Github")
+            }
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package+"/actions")!)}) {
+                Text("Actions")
+            }
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package+"/releases")!)}) {
+                Text("Releases")
+            }
+            HStack {
+                Divider()
+            }
             Picker("", selection: $selection) {
                 Text("Dependencies").tag(Tab.dependencies)
                 Text("Dependents").tag(Tab.dependents)

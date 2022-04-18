@@ -22,6 +22,15 @@ struct VendorView: View {
             }
         }
         .toolbar {
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://packagist.org/packages/"+self.svg.name+"/")!)}) {
+                Text("Packagist")
+            }
+            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+self.svg.name)!)}) {
+                Text("Github")
+            }
+            HStack {
+                Divider()
+            }
             Picker("", selection: $zoom) {
                 Text(Zoom.min.name()).tag(Zoom.min)
                 Text(Zoom.middle.name()).tag(Zoom.middle)
