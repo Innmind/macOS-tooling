@@ -19,7 +19,7 @@ final class Svg: ObservableObject {
         _ entity: StoredSvg? = nil
     ) {
         self.name = name
-        self.action = "export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:$PATH\" && dependency-graph \(action)"
+        self.action = "export PATH=\"/Users/$(whoami)/.composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/opt/homebrew/bin:$PATH\" && dependency-graph \(action)"
         self.entity = entity
         self.content = entity?.content
     }
