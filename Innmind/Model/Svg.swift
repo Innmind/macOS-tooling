@@ -16,22 +16,12 @@ final class Svg: ObservableObject {
     private init(
         _ name: String,
         _ action: @escaping (CLI.DependencyGraph) async -> Data?,
-        _ entity: StoredSvg? = nil
+        _ entity: StoredSvg?
     ) {
         self.name = name
         self.action = action
         self.entity = entity
         self.content = entity?.content
-    }
-
-    static func organization(_ organization: Organization, _ entity: StoredSvg? = nil) -> Svg {
-        return .init(
-            organization.displayName,
-            { dg in
-                await dg.vendor(organization.name)
-            },
-            entity
-        )
     }
 
     static func dependencies(_ organization: Organization, _ package: StoredPackage) -> Svg {

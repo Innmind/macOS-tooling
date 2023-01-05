@@ -25,6 +25,8 @@ struct SidebarView: View {
 
     @State private var selected: Selected = .organization
 
+    let vendor: Vendor
+
     var body: some View {
         NavigationSplitView {
             List(selection: $selected) {
@@ -63,11 +65,7 @@ struct SidebarView: View {
         } detail: {
             switch selected {
             case .organization:
-                VendorView()
-                    .environmentObject(Svg.organization(
-                        model.organization,
-                        model.findOrganizationSvg()
-                    ))
+                VendorView(vendor: vendor)
             case let .package(package):
                 PackageGraphs(organization: model.organization, package: package)
             }
@@ -77,6 +75,6 @@ struct SidebarView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView().environmentObject(ModelData(Persistence.shared))
+        SidebarView(vendor: .innmind).environmentObject(ModelData(Persistence.shared))
     }
 }

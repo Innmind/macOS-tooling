@@ -9,24 +9,24 @@ import SwiftUI
 
 struct VendorView: View {
     @Environment(\.openURL) var openUrl
-    @EnvironmentObject var svg: Svg
 
     @State private var zoom: Zoom = .middle
+    @State private var content: Data?
+    let vendor: Vendor
 
     var body: some View {
         VStack {
-            switch self.svg.content {
-            case nil:
+            if let content {
+                SvgView(content: content, zoom: $zoom)
+            } else {
                 LoadingView()
-            default:
-                SvgView(content: self.svg.content!, zoom: $zoom)
             }
         }
         .toolbar {
-            Button(action: {openUrl(URL(string: "https://packagist.org/packages/"+self.svg.name+"/")!)}) {
+            Button(action: {openUrl(URL(string: "https://packagist.org/packages/"+self.vendor.name+"/")!)}) {
                 Text("Packagist")
             }
-            Button(action: {openUrl(URL(string: "https://github.com/"+self.svg.name)!)}) {
+            Button(action: {openUrl(URL(string: "https://github.com/"+self.vendor.name)!)}) {
                 Text("Github")
             }
             HStack {
@@ -38,24 +38,27 @@ struct VendorView: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
-                .disabled(self.svg.content == nil)
+                .disabled(self.content == nil)
             Button(action: {
-                svg.reload()
+                content = nil
+                Task {
+                    await vendor.reload()
+                }
             }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }
-                .disabled(self.svg.content == nil)
+                .disabled(self.content == nil)
         }
-        .navigationTitle(self.svg.name)
-        .onAppear {
-            self.svg.load()
+        .navigationTitle(self.vendor.name)
+        .task {
+            self.content = await vendor.svg()
         }
     }
 }
 
 struct VendorView_Previews: PreviewProvider {
     static var previews: some View {
-        VendorView().environmentObject(Svg.organization(Organization(displayName: "Innmind", name: "innmind")))
+        VendorView(vendor: .innmind)
     }
 }

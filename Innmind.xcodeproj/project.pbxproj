@@ -10,6 +10,7 @@
 		CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD024605273FF71100C4E1E7 /* Zoom.swift */; };
 		CD02460A2740187400C4E1E7 /* Innmind.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD0246082740187400C4E1E7 /* Innmind.xcdatamodeld */; };
 		CD04CAFE2967251800F941EA /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CAFD2967251800F941EA /* CLI.swift */; };
+		CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CB0129672F8C00F941EA /* Vendor.swift */; };
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
 		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
 		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
@@ -54,6 +55,7 @@
 		CD024605273FF71100C4E1E7 /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		CD0246092740187400C4E1E7 /* Innmind.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Innmind.xcdatamodel; sourceTree = "<group>"; };
 		CD04CAFD2967251800F941EA /* CLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLI.swift; sourceTree = "<group>"; };
+		CD04CB0129672F8C00F941EA /* Vendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vendor.swift; sourceTree = "<group>"; };
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
 		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				CD04CAFD2967251800F941EA /* CLI.swift */,
+				CD04CB0129672F8C00F941EA /* Vendor.swift */,
 			);
 			path = Actors;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */,
 				CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */,
 				CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */,
+				CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */,
 				CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */,
 				CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */,
 				CD5D132F272EADCC00944E3F /* ContentView.swift in Sources */,
