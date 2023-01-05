@@ -83,7 +83,6 @@ struct SidebarView: View {
                 PackageGraphs(organization: model.organization, package: package)
             }
         }
-        .navigationTitle(title)
     }
 }
 
