@@ -20,6 +20,7 @@ struct DependenciesView: View {
                 LoadingView()
                     .onAppear {
                         disableModifiers = true
+                        self.svg.load()
                     }
             default:
                 SvgView(content: self.svg.content!, zoom: $zoom)
@@ -29,9 +30,6 @@ struct DependenciesView: View {
             }
         }
             .navigationTitle(self.svg.name)
-            .onAppear {
-                self.svg.load()
-            }
     }
 }
 
