@@ -25,15 +25,15 @@ final class Svg: ObservableObject {
     }
 
     static func organization(_ organization: Organization, _ entity: StoredSvg? = nil) -> Svg {
-        return .init(organization.displayName, "vendor \(organization.name)", entity)
+        return .init(organization.displayName, "vendor \(organization.name) --output", entity)
     }
 
     static func dependencies(_ organization: Organization, _ dependencies: StoredPackage) -> Svg {
-        return .init(dependencies.name!, "of \(organization.name)/\(dependencies.name!)", dependencies.dependencies)
+        return .init(dependencies.name!, "of \(organization.name)/\(dependencies.name!) --output", dependencies.dependencies)
     }
 
     static func dependents(_ organization: Organization, _ dependents: StoredPackage) -> Svg {
-        return .init(dependents.name!, "depends-on \(organization.name)/\(dependents.name!) \(organization.name)", dependents.dependents)
+        return .init(dependents.name!, "depends-on \(organization.name)/\(dependents.name!) \(organization.name) --output", dependents.dependents)
     }
 
     func load() {
@@ -50,19 +50,11 @@ final class Svg: ObservableObject {
             return
         }
 
-        Shell.run(self.action, callback: { [self] tmpDirectory, data in
-            let file = String(decoding: data, as: UTF8.self).trimmingCharacters(in: ["\n"])
-
-            do {
-                let svg = try Data(contentsOf: URL(fileURLWithPath: tmpDirectory.appending(file)))
-
-                DispatchQueue.main.async {
-                    self.content = svg
-                    entity?.content = svg
-                    Persistence.shared.save()
-                }
-            } catch {
-                return
+        Shell.run(self.action, callback: { [self] data in
+            DispatchQueue.main.async {
+                self.content = data
+                entity?.content = data
+                Persistence.shared.save()
             }
         })
     }

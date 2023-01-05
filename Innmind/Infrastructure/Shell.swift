@@ -9,18 +9,16 @@ import Foundation
 
 
 final class Shell {
-    static func run(_ command: String, callback: @escaping (String, Data) -> Void) {
+    static func run(_ command: String, callback: @escaping (Data) -> Void) {
         let process = Process()
         let output = Pipe()
-        let tmpDirectory = NSTemporaryDirectory()
         process.executableURL = URL(fileURLWithPath: "/bin/zsh")
         process.arguments = ["-c", command]
-        process.currentDirectoryURL = URL(fileURLWithPath: tmpDirectory)
         process.standardOutput = output
-        process.terminationHandler = { [callback, output, tmpDirectory] process in
+        process.terminationHandler = { [callback, output] process in
             let data = output.fileHandleForReading.readDataToEndOfFile()
 
-            callback(tmpDirectory, data)
+            callback(data)
         }
 
         do {
