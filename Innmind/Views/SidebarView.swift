@@ -86,19 +86,6 @@ struct SidebarView: View {
     }
 }
 
-struct PackageRow: View {
-    let package: StoredPackage
-    
-    var body: some View {
-        HStack {
-            Text(package.name!)
-            Spacer()
-        }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
-    }
-}
-
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
         SidebarView().environmentObject(ModelData(Persistence.shared))
