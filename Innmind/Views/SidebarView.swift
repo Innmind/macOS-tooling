@@ -24,18 +24,6 @@ struct SidebarView: View {
     ) var storedPackages: FetchedResults<StoredPackage>
 
     @State private var selected: Selected = .organization
-    private var title: String {
-        switch selected {
-        case .organization:
-            return model.organization.displayName
-        case let .package(package):
-            return package.name!
-        }
-    }
-
-    var packages: FetchedResults<StoredPackage> {
-        storedPackages
-    }
 
     var body: some View {
         NavigationSplitView {
@@ -49,7 +37,7 @@ struct SidebarView: View {
                         .font(.headline)
                 ) {
                     if !model.loading {
-                        ForEach(packages) { package in
+                        ForEach(storedPackages) { package in
                             NavigationLink(package.name!, value: Selected.package(package))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
