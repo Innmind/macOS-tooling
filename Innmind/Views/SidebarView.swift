@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct SidebarView: View {
+    enum Selected: Hashable {
+        case organization
+        case package(StoredPackage)
+    }
+
     @EnvironmentObject var model: ModelData
 
     @FetchRequest(
@@ -18,56 +23,46 @@ struct SidebarView: View {
         )]
     ) var storedPackages: FetchedResults<StoredPackage>
 
+    @State private var selected: Selected = .organization
+    private var title: String {
+        switch selected {
+        case .organization:
+            return model.organization.displayName
+        case let .package(package):
+            return package.name!
+        }
+    }
+
     var packages: FetchedResults<StoredPackage> {
         storedPackages
     }
 
     var body: some View {
-        NavigationView {
-            let vendor = VendorView()
-                .environmentObject(Svg.organization(
-                    model.organization,
-                    model.findOrganizationSvg()
-                ))
-
-            List {
-                NavigationLink(destination: vendor) {
-                    HStack() {
-                        Text("Organization")
-                    }
+        NavigationSplitView {
+            List(selection: $selected) {
+                NavigationLink("Organization", value: Selected.organization)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                }
                 Section(
                     header: Text("Packages")
                         .padding(.bottom, 10)
                         .font(.headline)
                 ) {
-                    if !model.loading {
-                        ForEach(packages) { package in
-                            VStack {
-                                NavigationLink(
-                                    destination: PackageGraphs(organization: model.organization, package: package)
-                                ) {
-                                    PackageRow(package: package)
-                                }
-                            }
+                    ForEach(packages) { package in
+                        if !model.loading {
+                            NavigationLink(package.name!, value: Selected.package(package))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                        } else {
+                            LoadingView()
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
                         }
-                    } else {
-                        LoadingView()
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
                     }
                 }
             }
             .frame(minWidth: 200)
             .toolbar {
-                Button(action: {
-                    NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-                }) {
-                    Image(systemName: "sidebar.left")
-                        .accessibilityLabel("Toggle Sidebar")
-                }
                 Button(action: {
                     model.reloadPackages()
                 }) {
@@ -76,22 +71,18 @@ struct SidebarView: View {
                 }
                     .disabled(model.loading)
             }
-
-            vendor
+        } detail: {
+            switch selected {
+            case .organization:
+                VendorView()
+                    .environmentObject(Svg.organization(
+                        model.organization,
+                        model.findOrganizationSvg()
+                    ))
+            case let .package(package):
+                PackageGraphs(organization: model.organization, package: package)
+            }
         }
-    }
-}
-
-struct PackageRow: View {
-    let package: StoredPackage
-    
-    var body: some View {
-        HStack {
-            Text(package.name!)
-            Spacer()
-        }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
     }
 }
 
