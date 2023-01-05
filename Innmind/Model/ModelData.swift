@@ -34,7 +34,7 @@ final class ModelData: ObservableObject {
             return
         }
 
-        loadPackages()
+        load(organization)
     }
 
     func findOrganizationSvg() -> StoredSvg {
@@ -59,81 +59,32 @@ final class ModelData: ObservableObject {
         return svg
     }
 
-    private func loadPackages() {
+    private func load(_ organization: Organization) {
         loading = true
-        self.search(url: "https://packagist.org/search.json?q="+organization.name+"/")
-    }
 
-    private func search(url: String) {
-        self.search = self.searchPage(url: url)
+        let session = URLSession(configuration: .ephemeral)
+
+        self.search = session
+            .dataTaskPublisher(for: URL(string: "https://packagist.org/packages/list.json?vendor="+organization.name+"&fields[]=repository&fields[]=abandoned")!)
+            .map { $0.data }
+            .decode(type: Packagist.Organization.self, decoder: JSONDecoder())
             .map {
-                $0
-                    .map { self.parse(result: $0) }
-                    .flatMap { $0 }
-                    .map { self.persist($0) }
+                $0.packages.map { self.persist(organization, $0) }
             }
             .map { packages in
                 self.persistence.save()
 
                 return false // means it's done loading
             }
+            .eraseToAnyPublisher()
             .replaceError(with: false)
             .receive(on: DispatchQueue.main)
             .assign(to: \.loading, on: self)
     }
 
-    private func searchPage(url: String) -> AnyPublisher<[PackagistSearch], Error> {
-        let session = URLSession(configuration: .ephemeral)
-
-        return session
-            .dataTaskPublisher(for: URL(string: url)!)
-            .map { $0.data }
-            .decode(type: PackagistSearch.self, decoder: JSONDecoder())
-            .map { [$0] }
-            .replaceError(with: [])
-            .eraseToAnyPublisher()
-            .flatMap { results in
-                self.attemptNextPage(results: results).eraseToAnyPublisher()
-            }
-            .eraseToAnyPublisher()
-    }
-
-    private func attemptNextPage(results: [PackagistSearch]) ->AnyPublisher<[PackagistSearch], Error> {
-        if let next = results.last?.next {
-            return self
-                .searchPage(url: next)
-                .map { page in
-                    var all = results
-                    all.append(contentsOf: page)
-
-                    return all
-                }
-                .eraseToAnyPublisher()
-        } else {
-            return self.wrapResults(results: results)
-        }
-    }
-
-    private func wrapResults(results: [PackagistSearch]) -> AnyPublisher<[PackagistSearch], Error> {
-        return Just(results)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
-
-    private func parse(result: PackagistSearch) -> [Package] {
-        return result.results
-            .filter { $0.name.starts(with: self.organization.name) }
-            .filter { $0.abandoned == PackagistSearch.Abandoned.bool(false) || $0.abandoned == nil }
-            .filter { $0.virtual == nil }
-            .map { Package(
-                name: String($0.name.dropFirst(self.organization.name.count + 1)),
-                repository: $0.repositoryUrl()
-            ) }
-    }
-
-    private func persist(_ package: Package) -> Package {
+    private func persist(_ organization: Organization, _ package: Packagist.Package) -> Packagist.Package {
         let storedPackage = StoredPackage(context: managedObjectContext)
-        storedPackage.name = package.name
+        storedPackage.name = String(package.name.dropFirst(organization.name.count + 1))
         storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: managedObjectContext)
         storedPackage.dependents = StoredSvg(context: managedObjectContext)
