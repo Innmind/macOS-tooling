@@ -48,16 +48,17 @@ struct SidebarView: View {
                         .padding(.bottom, 10)
                         .font(.headline)
                 ) {
-                    ForEach(packages) { package in
-                        if !model.loading {
+                    if !model.loading {
+                        ForEach(packages) { package in
                             NavigationLink(package.name!, value: Selected.package(package))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
-                        } else {
-                            LoadingView()
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 5)
+
                         }
+                    } else {
+                        LoadingView()
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
                     }
                 }
             }
