@@ -8,40 +8,31 @@
 import SwiftUI
 
 struct DependenciesView: View {
-    @EnvironmentObject var svg: Svg
-
     @Binding var disableModifiers: Bool
     @Binding var zoom: Zoom
+    let package: Vendor.Package
+    @State private var content: Data? = nil
     
     var body: some View {
         VStack {
-            switch self.svg.content {
-            case nil:
+            if let content {
+                SvgView(content: content, zoom: $zoom)
+            } else {
                 LoadingView()
-                    .onAppear {
-                        disableModifiers = true
-                        self.svg.load()
-                    }
-            default:
-                SvgView(content: self.svg.content!, zoom: $zoom)
-                    .onAppear {
-                        disableModifiers = false
-                    }
             }
         }
-            .navigationTitle(self.svg.name)
+            .navigationTitle(package.name)
+            .task {
+                disableModifiers = true
+                self.content = await package.dependencies()
+                disableModifiers = false
+            }
     }
 }
 
 struct DependenciesView_Previews: PreviewProvider {
-    static var model = ModelData(Persistence.shared)
-    static var package = StoredPackage()
-
     static var previews: some View {
-        DependenciesView(disableModifiers: .constant(true), zoom: .constant(.max))
-            .environmentObject(Svg.dependencies(
-                Organization(displayName: "Innmind", name: "innmind"),
-                package
-            ))
+        DependenciesView(disableModifiers: .constant(true), zoom: .constant(.max), package: .immutable)
+
     }
 }

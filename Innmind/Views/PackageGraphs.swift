@@ -15,26 +15,22 @@ struct PackageGraphs: View {
 
     @State private var zoom: Zoom = .max
     @State private var disableModifiers = false
-    private var dependencies: Svg
-    private var dependents: Svg
     private let organization: String
-    private let package: String
     private var github: URL? = nil
     private var actions: URL? = nil
     private var releases: URL? = nil
+    private let package: Vendor.Package
     
     enum Tab {
         case dependencies
         case dependents
     }
 
-    init(organization: Organization, package: StoredPackage) {
-        dependencies = Svg.dependencies(organization, package)
-        dependents = Svg.dependents(organization, package)
+    init(organization: Organization, stored: StoredPackage) {
+        package = Vendor.innmind.package(stored, stored.name ?? "-")
         self.organization = organization.name
-        self.package = package.name ?? "package-name" // coalesce for the preview
 
-        if let github = package.repository {
+        if let github = stored.repository {
             self.github = github
             self.actions = github.appendingPathComponent("/actions")
             self.releases = github.appendingPathComponent("/releases")
@@ -45,16 +41,14 @@ struct PackageGraphs: View {
         VStack {
             switch selection {
             case .dependencies:
-                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom)
-                    .environmentObject(dependencies)
+                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
             case .dependents:
-                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom)
-                    .environmentObject(dependents)
+                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
             }
         }
         .toolbar {
             Button {
-                openURL(URL(string: "https://packagist.org/packages/"+organization+"/"+package)!)
+                openURL(URL(string: "https://packagist.org/packages/"+organization+"/"+package.name)!)
             } label: {
                 Text("Packagist")
             }
@@ -95,12 +89,12 @@ struct PackageGraphs: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .disabled(disableModifiers)
             Button(action: {
-                switch selection {
-                case .dependencies:
-                    dependencies.reload()
-                case .dependents:
-                    dependents.reload()
-                }
+//                switch selection {
+//                case .dependencies:
+//                    dependencies.reload()
+//                case .dependents:
+//                    dependents.reload()
+//                }
             }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
@@ -115,6 +109,6 @@ struct PackageGraphs_Previews: PreviewProvider {
     static var package = StoredPackage()
 
     static var previews: some View {
-        PackageGraphs(organization: model.organization, package: package)
+        PackageGraphs(organization: model.organization, stored: package)
     }
 }

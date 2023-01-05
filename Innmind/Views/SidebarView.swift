@@ -67,7 +67,7 @@ struct SidebarView: View {
             case .organization:
                 VendorView(vendor: vendor)
             case let .package(package):
-                PackageGraphs(organization: model.organization, package: package)
+                PackageGraphs(organization: model.organization, stored: package)
             }
         }
     }
