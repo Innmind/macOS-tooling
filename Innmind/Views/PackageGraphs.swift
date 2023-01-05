@@ -9,6 +9,8 @@ import SwiftUI
 import WebKit
 
 struct PackageGraphs: View {
+    @Environment(\.openURL) private var openURL
+
     @State private var selection: Tab = .dependencies
 
     @State private var zoom: Zoom = .max
@@ -42,16 +44,24 @@ struct PackageGraphs: View {
             }
         }
         .toolbar {
-            Button(action: {NSWorkspace.shared.open(URL(string: "https://packagist.org/packages/"+organization+"/"+package)!)}) {
+            Button {
+                openURL(URL(string: "https://packagist.org/packages/"+organization+"/"+package)!)
+            } label: {
                 Text("Packagist")
             }
-            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package)!)}) {
+            Button {
+                openURL(URL(string: "https://github.com/"+organization+"/"+package)!)
+            } label: {
                 Text("Github")
             }
-            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package+"/actions")!)}) {
+            Button {
+                openURL(URL(string: "https://github.com/"+organization+"/"+package+"/actions")!)
+            } label: {
                 Text("Actions")
             }
-            Button(action: {NSWorkspace.shared.open(URL(string: "https://github.com/"+organization+"/"+package+"/releases")!)}) {
+            Button {
+                openURL(URL(string: "https://github.com/"+organization+"/"+package+"/releases")!)
+            } label: {
                 Text("Releases")
             }
             HStack {
