@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD024605273FF71100C4E1E7 /* Zoom.swift */; };
 		CD02460A2740187400C4E1E7 /* Innmind.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CD0246082740187400C4E1E7 /* Innmind.xcdatamodeld */; };
+		CD04CAFE2967251800F941EA /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CAFD2967251800F941EA /* CLI.swift */; };
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
 		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
 		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
@@ -29,7 +30,6 @@
 		CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */; };
 		CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9655272EE33000C5FF56 /* VendorView.swift */; };
 		CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B2273EA17A005C9ADA /* Svg.swift */; };
-		CD8F91B5273EA6A3005C9ADA /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B4273EA6A3005C9ADA /* Shell.swift */; };
 		CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8E5F529670A610043BFF2 /* Packagist.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +53,7 @@
 /* Begin PBXFileReference section */
 		CD024605273FF71100C4E1E7 /* Zoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zoom.swift; sourceTree = "<group>"; };
 		CD0246092740187400C4E1E7 /* Innmind.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Innmind.xcdatamodel; sourceTree = "<group>"; };
+		CD04CAFD2967251800F941EA /* CLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLI.swift; sourceTree = "<group>"; };
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
 		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
@@ -77,7 +78,6 @@
 		CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageGraphs.swift; sourceTree = "<group>"; };
 		CD8A9655272EE33000C5FF56 /* VendorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorView.swift; sourceTree = "<group>"; };
 		CD8F91B2273EA17A005C9ADA /* Svg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Svg.swift; sourceTree = "<group>"; };
-		CD8F91B4273EA6A3005C9ADA /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		CDD8E5F529670A610043BFF2 /* Packagist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packagist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD04CAFC296724BB00F941EA /* Actors */ = {
+			isa = PBXGroup;
+			children = (
+				CD04CAFD2967251800F941EA /* CLI.swift */,
+			);
+			path = Actors;
+			sourceTree = "<group>";
+		};
 		CD21EA43272F0CDB00EF05D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,7 +147,7 @@
 		CD5D132B272EADCC00944E3F /* Innmind */ = {
 			isa = PBXGroup;
 			children = (
-				CD8F91AF273E98DC005C9ADA /* Infrastructure */,
+				CD04CAFC296724BB00F941EA /* Actors */,
 				CD5D132C272EADCC00944E3F /* InnmindApp.swift */,
 				CD8A9650272EDF0100C5FF56 /* Views */,
 				CD5D1330272EADCD00944E3F /* Assets.xcassets */,
@@ -203,14 +211,6 @@
 				CD46025C2741573E0080B1B3 /* LoadingView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		CD8F91AF273E98DC005C9ADA /* Infrastructure */ = {
-			isa = PBXGroup;
-			children = (
-				CD8F91B4273EA6A3005C9ADA /* Shell.swift */,
-			);
-			path = Infrastructure;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -359,8 +359,8 @@
 				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
 				CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */,
 				CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */,
+				CD04CAFE2967251800F941EA /* CLI.swift in Sources */,
 				CD46025D2741573E0080B1B3 /* LoadingView.swift in Sources */,
-				CD8F91B5273EA6A3005C9ADA /* Shell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
