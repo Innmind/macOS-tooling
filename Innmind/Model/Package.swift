@@ -9,5 +9,6 @@ import Foundation
 
 struct Package: Hashable, Codable, Identifiable {
     var name: String
+    var repository: URL?
     var id: Package { self }
 }

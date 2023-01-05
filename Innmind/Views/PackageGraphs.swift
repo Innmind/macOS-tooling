@@ -17,8 +17,11 @@ struct PackageGraphs: View {
     @State private var disableModifiers = false
     private var dependencies: Svg
     private var dependents: Svg
-    private var organization: String
-    private var package: String
+    private let organization: String
+    private let package: String
+    private var github: URL? = nil
+    private var actions: URL? = nil
+    private var releases: URL? = nil
     
     enum Tab {
         case dependencies
@@ -30,6 +33,12 @@ struct PackageGraphs: View {
         dependents = Svg.dependents(organization, package)
         self.organization = organization.name
         self.package = package.name ?? "package-name" // coalesce for the preview
+
+        if let github = package.repository {
+            self.github = github
+            self.actions = github.appendingPathComponent("/actions")
+            self.releases = github.appendingPathComponent("/releases")
+        }
     }
     
     var body: some View {
@@ -49,20 +58,26 @@ struct PackageGraphs: View {
             } label: {
                 Text("Packagist")
             }
-            Button {
-                openURL(URL(string: "https://github.com/"+organization+"/"+package)!)
-            } label: {
-                Text("Github")
+            if let github {
+                Button {
+                    openURL(github)
+                } label: {
+                    Text("Github")
+                }
             }
-            Button {
-                openURL(URL(string: "https://github.com/"+organization+"/"+package+"/actions")!)
-            } label: {
-                Text("Actions")
+            if let actions {
+                Button {
+                    openURL(actions)
+                } label: {
+                    Text("Actions")
+                }
             }
-            Button {
-                openURL(URL(string: "https://github.com/"+organization+"/"+package+"/releases")!)
-            } label: {
-                Text("Releases")
+            if let releases {
+                Button {
+                    openURL(releases)
+                } label: {
+                    Text("Releases")
+                }
             }
             HStack {
                 Divider()

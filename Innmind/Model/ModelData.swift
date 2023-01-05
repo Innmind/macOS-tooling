@@ -125,12 +125,16 @@ final class ModelData: ObservableObject {
             .filter { $0.name.starts(with: self.organization.name) }
             .filter { $0.abandoned == PackagistSearch.Abandoned.bool(false) || $0.abandoned == nil }
             .filter { $0.virtual == nil }
-            .map { Package(name: String($0.name.dropFirst(self.organization.name.count + 1))) }
+            .map { Package(
+                name: String($0.name.dropFirst(self.organization.name.count + 1)),
+                repository: $0.repositoryUrl()
+            ) }
     }
 
     private func persist(_ package: Package) -> Package {
         let storedPackage = StoredPackage(context: managedObjectContext)
         storedPackage.name = package.name
+        storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: managedObjectContext)
         storedPackage.dependents = StoredSvg(context: managedObjectContext)
 

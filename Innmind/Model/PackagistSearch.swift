@@ -34,9 +34,42 @@ struct PackagistSearch: Hashable, Codable {
         }
     }
 
+    enum Repository: Hashable, Codable {
+        case github (URL)
+        case none
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let url = try? container.decode(String.self) {
+                if url.isEmpty {
+                    self = .none
+                    return
+                }
+
+                if let github = URL(string: url.trimmingCharacters(in: ["/"])) {
+                    self = .github(github)
+                    return
+                }
+            }
+
+            self = .none
+        }
+    }
+
     struct Result: Hashable, Codable {
         let name: String
+        let repository: Repository
         let abandoned: Abandoned?
         let virtual: Bool?
+
+        func repositoryUrl() -> URL? {
+            switch repository {
+            case let .github(url):
+                return url
+            case .none:
+                return nil
+            }
+        }
     }
 }
