@@ -20,6 +20,10 @@ struct SidebarView: View {
 
     let vendor: Vendor
 
+    init(_ app: Application) {
+        vendor = app.vendors().first!
+    }
+
     var body: some View {
         NavigationSplitView {
             List(selection: $selected) {
@@ -91,6 +95,6 @@ struct SidebarView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(vendor: .innmind)
+        SidebarView(.init(.shared, .shared))
     }
 }

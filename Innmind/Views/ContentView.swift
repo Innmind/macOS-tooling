@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    let vendor: Vendor
+    let app: Application
 
     var body: some View {
-        SidebarView(vendor: vendor)
+        SidebarView(app)
             .frame(minWidth: 600, minHeight: 400)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(vendor: .innmind)
+        ContentView(app: .init(.shared, .shared))
     }
 }
