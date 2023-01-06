@@ -13,8 +13,6 @@
 		CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CB0129672F8C00F941EA /* Vendor.swift */; };
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
 		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
-		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
-		CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C29272FDEA200CFEBB2 /* DependentsView.swift */; };
 		CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C2B272FF42800CFEBB2 /* InnmindCommands.swift */; };
 		CD21EA45272F0CDB00EF05D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD21EA44272F0CDB00EF05D5 /* WebKit.framework */; platformFilters = (maccatalyst, macos, ); };
 		CD46025B274116930080B1B3 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD46025A274116930080B1B3 /* Persistence.swift */; };
@@ -58,8 +56,6 @@
 		CD04CB0129672F8C00F941EA /* Vendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vendor.swift; sourceTree = "<group>"; };
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
 		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
-		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
-		CD127C29272FDEA200CFEBB2 /* DependentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentsView.swift; sourceTree = "<group>"; };
 		CD127C2B272FF42800CFEBB2 /* InnmindCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindCommands.swift; sourceTree = "<group>"; };
 		CD21EA44272F0CDB00EF05D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CD46025A274116930080B1B3 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -209,8 +205,6 @@
 				CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */,
 				CD8A9655272EE33000C5FF56 /* VendorView.swift */,
 				CD127C23272FDA7500CFEBB2 /* SvgView.swift */,
-				CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */,
-				CD127C29272FDEA200CFEBB2 /* DependentsView.swift */,
 				CD46025C2741573E0080B1B3 /* LoadingView.swift */,
 			);
 			path = Views;
@@ -360,8 +354,6 @@
 				CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */,
 				CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */,
 				CD5D132D272EADCC00944E3F /* InnmindApp.swift in Sources */,
-				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
-				CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */,
 				CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */,
 				CD04CAFE2967251800F941EA /* CLI.swift in Sources */,
 				CD46025D2741573E0080B1B3 /* LoadingView.swift in Sources */,

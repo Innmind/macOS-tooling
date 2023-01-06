@@ -12,6 +12,7 @@ struct PackageGraphs: View {
     @Environment(\.openURL) private var openURL
 
     @State private var selection: Tab = .dependencies
+    @State private var content: Data? = nil
 
     @State private var zoom: Zoom = .max
     @State private var disableModifiers = false
@@ -39,12 +40,24 @@ struct PackageGraphs: View {
     
     var body: some View {
         VStack {
+            if let content {
+                SvgView(content: content, zoom: $zoom)
+            } else {
+                LoadingView()
+            }
+        }
+        .navigationTitle(package.name)
+        .task(id: selection) {
+            disableModifiers = true
+
             switch selection {
             case .dependencies:
-                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                self.content = await package.dependencies()
             case .dependents:
-                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                self.content = await package.dependents()
             }
+
+            disableModifiers = false
         }
         .toolbar {
             Button {
