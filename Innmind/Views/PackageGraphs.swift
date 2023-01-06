@@ -100,9 +100,6 @@ struct PackageGraphs: View {
 }
 
 struct PackageGraphs_Previews: PreviewProvider {
-    static var model = ModelData(Persistence.shared)
-    static var package = StoredPackage()
-
     static var previews: some View {
         PackageGraphs(package: .immutable)
     }

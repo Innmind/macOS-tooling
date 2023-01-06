@@ -12,15 +12,18 @@ import CoreData
 final class ModelData: ObservableObject {
     @Published var loading = false
 
+    static let shared = ModelData(Persistence.shared, HTTP.Packagist.shared)
+
     let organization = Organization(displayName: "Innmind", name: "innmind")
 
     private var persistence: Persistence
     private var managedObjectContext: NSManagedObjectContext
-    private var search: AnyCancellable?
+    private var packagist: HTTP.Packagist
 
-    init(_ persistence: Persistence) {
+    init(_ persistence: Persistence, _ packagist: HTTP.Packagist) {
         self.persistence = persistence
         managedObjectContext = persistence.container.viewContext
+        self.packagist = packagist
     }
 
     func reloadPackages() {
@@ -62,33 +65,24 @@ final class ModelData: ObservableObject {
     private func load(_ organization: Organization) {
         loading = true
 
-        let session = URLSession(configuration: .ephemeral)
-
-        self.search = session
-            .dataTaskPublisher(for: URL(string: "https://packagist.org/packages/list.json?vendor="+organization.name+"&fields[]=repository&fields[]=abandoned")!)
-            .map { $0.data }
-            .decode(type: Packagist.Organization.self, decoder: JSONDecoder())
-            .map {
-                $0.packages.map { self.persist(organization, $0) }
+        Task {
+            let parsed = try await packagist.organization(organization.name)
+            parsed.packages.forEach {
+                self.persist(organization, $0)
             }
-            .map { packages in
-                self.persistence.save()
+            self.persistence.save()
 
-                return false // means it's done loading
+            DispatchQueue.main.async {
+                self.loading = false
             }
-            .eraseToAnyPublisher()
-            .replaceError(with: false)
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.loading, on: self)
+        }
     }
 
-    private func persist(_ organization: Organization, _ package: Packagist.Package) -> Packagist.Package {
+    private func persist(_ organization: Organization, _ package: Packagist.Package) {
         let storedPackage = StoredPackage(context: managedObjectContext)
         storedPackage.name = String(package.name.dropFirst(organization.name.count + 1))
         storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: managedObjectContext)
         storedPackage.dependents = StoredSvg(context: managedObjectContext)
-
-        return package
     }
 }

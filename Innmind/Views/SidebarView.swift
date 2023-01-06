@@ -77,6 +77,7 @@ struct SidebarView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(vendor: .innmind).environmentObject(ModelData(Persistence.shared))
+        SidebarView(vendor: .innmind)
+            .environmentObject(ModelData.shared)
     }
 }

@@ -11,12 +11,13 @@ import SwiftUI
 struct InnmindApp: App {
     let vendor = Vendor.innmind
     let persistence = Persistence.shared
+    let packagist = HTTP.Packagist.shared
 
     var body: some Scene {
         WindowGroup {
             ContentView(vendor: vendor)
                 .environment(\.managedObjectContext, persistence.container.viewContext)
-                .environmentObject(ModelData(persistence))
+                .environmentObject(ModelData(persistence, packagist))
         }
         .commands {
             InnmindCommands()

@@ -31,6 +31,7 @@
 		CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */; };
 		CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9655272EE33000C5FF56 /* VendorView.swift */; };
 		CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B2273EA17A005C9ADA /* Svg.swift */; };
+		CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FFBBF29686C9C00730127 /* HTTP.swift */; };
 		CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8E5F529670A610043BFF2 /* Packagist.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageGraphs.swift; sourceTree = "<group>"; };
 		CD8A9655272EE33000C5FF56 /* VendorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorView.swift; sourceTree = "<group>"; };
 		CD8F91B2273EA17A005C9ADA /* Svg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Svg.swift; sourceTree = "<group>"; };
+		CD9FFBBF29686C9C00730127 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		CDD8E5F529670A610043BFF2 /* Packagist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packagist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,6 +116,7 @@
 			children = (
 				CD04CAFD2967251800F941EA /* CLI.swift */,
 				CD04CB0129672F8C00F941EA /* Vendor.swift */,
+				CD9FFBBF29686C9C00730127 /* HTTP.swift */,
 			);
 			path = Actors;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */,
 				CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */,
 				CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */,
+				CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */,
 				CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */,
 				CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */,
 				CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */,
