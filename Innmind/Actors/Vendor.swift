@@ -10,13 +10,25 @@ import Foundation
 actor Vendor {
     let persistence: Persistence
     let graph: CLI.DependencyGraph
+    let packagist: HTTP.Packagist
     nonisolated let name: String
 
-    static let innmind = Vendor(Persistence.shared, CLI.DependencyGraph.shared, "innmind")
+    static let innmind = Vendor(
+        Persistence.shared,
+        CLI.DependencyGraph.shared,
+        HTTP.Packagist.shared,
+        "innmind"
+    )
 
-    init(_ persistence: Persistence, _ graph: CLI.DependencyGraph, _ name: String) {
+    init(
+        _ persistence: Persistence,
+        _ graph: CLI.DependencyGraph,
+        _ packagist: HTTP.Packagist,
+        _ name: String
+    ) {
         self.persistence = persistence
         self.graph = graph
+        self.packagist = packagist
         self.name = name
     }
 
@@ -35,6 +47,71 @@ actor Vendor {
         stored.content = nil
 
         return await populate(stored).content
+    }
+
+    func packages() async -> [StoredPackage] {
+        let fetch = StoredPackage.fetchRequest()
+        fetch.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
+        do {
+            let existing = try persistence
+                .container
+                .viewContext
+                .fetch(fetch)
+
+            if !existing.isEmpty {
+                return Array<StoredPackage>(existing)
+            }
+        } catch {
+            // let refetch from packagist
+        }
+
+        do {
+            let packages = try await packagist
+                .organization(name)
+                .packages
+                .sorted(by: { a, b in
+                    a.name < b.name
+                })
+                .map { self.persistPackage($0) }
+            persistence.save()
+
+            return packages
+        } catch {
+            print("Failed to fetch from packagist")
+
+            return []
+        }
+    }
+
+    func reloadPackages() async -> [StoredPackage] {
+        do {
+            try persistence
+                .container
+                .viewContext
+                .fetch(StoredPackage.fetchRequest())
+                .forEach { persistence.container.viewContext.delete($0) }
+        } catch {
+            print("failed to delete packages")
+
+            return []
+        }
+
+        do {
+            let packages = try await packagist
+                .organization(name)
+                .packages
+                .sorted(by: { a, b in
+                    a.name < b.name
+                })
+                .map { self.persistPackage($0) }
+            persistence.save()
+
+            return packages
+        } catch {
+            print("Failed to fetch from packagist")
+
+            return []
+        }
     }
 
     nonisolated
@@ -147,5 +224,14 @@ actor Vendor {
         svg.organization = name
 
         return svg
+    }
+
+    private func persistPackage(_ package: Innmind.Packagist.Package) -> StoredPackage {
+        let storedPackage = StoredPackage(context: persistence.container.viewContext)
+        storedPackage.name = String(package.name.dropFirst(name.count + 1))
+        storedPackage.dependencies = StoredSvg(context: persistence.container.viewContext)
+        storedPackage.dependents = StoredSvg(context: persistence.container.viewContext)
+
+        return storedPackage
     }
 }

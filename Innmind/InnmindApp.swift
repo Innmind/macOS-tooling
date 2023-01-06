@@ -17,7 +17,6 @@ struct InnmindApp: App {
         WindowGroup {
             ContentView(vendor: vendor)
                 .environment(\.managedObjectContext, persistence.container.viewContext)
-                .environmentObject(ModelData(persistence, packagist))
         }
         .commands {
             InnmindCommands()

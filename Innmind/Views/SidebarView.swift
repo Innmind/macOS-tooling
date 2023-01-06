@@ -13,15 +13,8 @@ struct SidebarView: View {
         case package(StoredPackage)
     }
 
-    @EnvironmentObject var model: ModelData
-
-    @FetchRequest(
-        entity: StoredPackage.entity(),
-        sortDescriptors: [NSSortDescriptor(
-            keyPath: \StoredPackage.name,
-            ascending: true
-        )]
-    ) var storedPackages: FetchedResults<StoredPackage>
+    @State private var packages: [StoredPackage] = []
+    @State private var loading = false
 
     @State private var selected: Selected = .organization
 
@@ -38,8 +31,8 @@ struct SidebarView: View {
                         .padding(.bottom, 10)
                         .font(.headline)
                 ) {
-                    if !model.loading {
-                        ForEach(storedPackages) { package in
+                    if !loading {
+                        ForEach(packages) { package in
                             NavigationLink(package.name!, value: Selected.package(package))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
@@ -55,12 +48,25 @@ struct SidebarView: View {
             .frame(minWidth: 200)
             .toolbar {
                 Button(action: {
-                    model.reloadPackages()
+                    loading = true
+                    packages = []
+                    Task {
+                        let fetched = await vendor.reloadPackages()
+                        DispatchQueue.main.async {
+                            packages = fetched
+                            loading = false
+                        }
+                    }
                 }) {
                     Image(systemName: "arrow.clockwise.circle")
                         .accessibilityLabel("Reload Packages")
                 }
-                    .disabled(model.loading)
+                    .disabled(loading)
+            }
+            .task {
+                loading = true
+                packages = await vendor.packages()
+                loading = false
             }
         } detail: {
             switch selected {
@@ -86,6 +92,5 @@ struct SidebarView: View {
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
         SidebarView(vendor: .innmind)
-            .environmentObject(ModelData.shared)
     }
 }

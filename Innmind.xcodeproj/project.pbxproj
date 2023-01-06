@@ -12,7 +12,6 @@
 		CD04CAFE2967251800F941EA /* CLI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CAFD2967251800F941EA /* CLI.swift */; };
 		CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD04CB0129672F8C00F941EA /* Vendor.swift */; };
 		CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C23272FDA7500CFEBB2 /* SvgView.swift */; };
-		CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C25272FDB8C00CFEBB2 /* Organization.swift */; };
 		CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */; };
 		CD127C2A272FDEA200CFEBB2 /* DependentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C29272FDEA200CFEBB2 /* DependentsView.swift */; };
 		CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD127C2B272FF42800CFEBB2 /* InnmindCommands.swift */; };
@@ -26,7 +25,6 @@
 		CD5D133F272EADCD00944E3F /* InnmindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D133E272EADCD00944E3F /* InnmindTests.swift */; };
 		CD5D1349272EADCD00944E3F /* InnmindUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D1348272EADCD00944E3F /* InnmindUITests.swift */; };
 		CD5D134B272EADCD00944E3F /* InnmindUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D134A272EADCD00944E3F /* InnmindUITestsLaunchTests.swift */; };
-		CD8A964C272EDE0D00C5FF56 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A964B272EDE0D00C5FF56 /* ModelData.swift */; };
 		CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9651272EDF6100C5FF56 /* SidebarView.swift */; };
 		CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */; };
 		CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9655272EE33000C5FF56 /* VendorView.swift */; };
@@ -58,7 +56,6 @@
 		CD04CAFD2967251800F941EA /* CLI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLI.swift; sourceTree = "<group>"; };
 		CD04CB0129672F8C00F941EA /* Vendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vendor.swift; sourceTree = "<group>"; };
 		CD127C23272FDA7500CFEBB2 /* SvgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SvgView.swift; sourceTree = "<group>"; };
-		CD127C25272FDB8C00CFEBB2 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesView.swift; sourceTree = "<group>"; };
 		CD127C29272FDEA200CFEBB2 /* DependentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentsView.swift; sourceTree = "<group>"; };
 		CD127C2B272FF42800CFEBB2 /* InnmindCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindCommands.swift; sourceTree = "<group>"; };
@@ -76,7 +73,6 @@
 		CD5D1344272EADCD00944E3F /* InnmindUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InnmindUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5D1348272EADCD00944E3F /* InnmindUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindUITests.swift; sourceTree = "<group>"; };
 		CD5D134A272EADCD00944E3F /* InnmindUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		CD8A964B272EDE0D00C5FF56 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		CD8A9651272EDF6100C5FF56 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageGraphs.swift; sourceTree = "<group>"; };
 		CD8A9655272EE33000C5FF56 /* VendorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorView.swift; sourceTree = "<group>"; };
@@ -195,8 +191,6 @@
 		CD8A964F272EDED500C5FF56 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CD8A964B272EDE0D00C5FF56 /* ModelData.swift */,
-				CD127C25272FDB8C00CFEBB2 /* Organization.swift */,
 				CD8F91B2273EA17A005C9ADA /* Svg.swift */,
 				CD024605273FF71100C4E1E7 /* Zoom.swift */,
 				CDD8E5F529670A610043BFF2 /* Packagist.swift */,
@@ -349,7 +343,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD8A964C272EDE0D00C5FF56 /* ModelData.swift in Sources */,
 				CD02460A2740187400C4E1E7 /* Innmind.xcdatamodeld in Sources */,
 				CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */,
 				CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */,
@@ -361,7 +354,6 @@
 				CD5D132F272EADCC00944E3F /* ContentView.swift in Sources */,
 				CD46025B274116930080B1B3 /* Persistence.swift in Sources */,
 				CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */,
-				CD127C26272FDB8C00CFEBB2 /* Organization.swift in Sources */,
 				CD024606273FF71100C4E1E7 /* Zoom.swift in Sources */,
 				CD5D132D272EADCC00944E3F /* InnmindApp.swift in Sources */,
 				CD127C28272FDE4900CFEBB2 /* DependenciesView.swift in Sources */,
