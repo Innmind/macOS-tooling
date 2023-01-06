@@ -9,16 +9,24 @@ import Foundation
 
 final class Svg: ObservableObject {
     @Published var content: Data?
-    private let action: () async -> Data?
+    private let fetch: () async -> Data?
+    private let refetch: () async -> Data?
 
-    private init(_ action: @escaping () async -> Data?) {
-        self.action = action
+    private init(
+        _ fetch: @escaping () async -> Data?,
+        _ refetch: @escaping () async -> Data?
+    ) {
+        self.fetch = fetch
+        self.refetch = refetch
     }
 
     static func dependencies(_ package: Vendor.Package) -> Svg {
         return .init(
             {
                 return await package.dependencies()
+            },
+            {
+                return await package.reloadDependencies()
             }
         )
     }
@@ -27,27 +35,25 @@ final class Svg: ObservableObject {
         return .init(
             {
                 return await package.dependents()
+            },
+            {
+                return await package.reloadDependents()
             }
         )
     }
 
     func load() {
-        fetch()
+        run(fetch)
     }
 
     func reload() {
         content = nil
-        fetch()
+        run(refetch)
     }
 
-    private func fetch() {
-        if (content != nil) {
-            return
-        }
-
+    private func run(_ action: @escaping () async -> Data?) {
         Task {
-            let run = self.action
-            let svg = await run()
+            let svg = await action()
 
             DispatchQueue.main.async {
                 self.content = svg

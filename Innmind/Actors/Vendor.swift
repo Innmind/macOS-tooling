@@ -77,11 +77,29 @@ actor Vendor {
             return svg
         }
 
+        func reloadDependencies() async -> Data? {
+            stored.dependencies?.content = nil
+            let svg = await graph.of(organization, name)
+            stored.dependencies?.content = svg
+            persistence.save()
+
+            return svg
+        }
+
         func dependents() async -> Data? {
             if let svg = stored.dependents?.content {
                 return svg
             }
 
+            let svg = await graph.dependsOn(organization, name)
+            stored.dependents?.content = svg
+            persistence.save()
+
+            return svg
+        }
+
+        func reloadDependents() async -> Data? {
+            stored.dependents?.content = nil
             let svg = await graph.dependsOn(organization, name)
             stored.dependents?.content = svg
             persistence.save()

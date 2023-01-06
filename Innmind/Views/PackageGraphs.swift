@@ -95,12 +95,12 @@ struct PackageGraphs: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .disabled(disableModifiers)
             Button(action: {
-//                switch selection {
-//                case .dependencies:
-//                    dependencies.reload()
-//                case .dependents:
-//                    dependents.reload()
-//                }
+                switch selection {
+                case .dependencies:
+                    dependencies.reload()
+                case .dependents:
+                    dependents.reload()
+                }
             }) {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
