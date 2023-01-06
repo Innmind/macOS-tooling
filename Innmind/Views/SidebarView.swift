@@ -68,7 +68,7 @@ struct SidebarView: View {
                 VendorView(vendor: vendor)
                     .navigationTitle(vendor.name)
             case let .package(package):
-                PackageGraphs(organization: model.organization, stored: package)
+                PackageGraphs(package: vendor.package(package, package.name ?? "-"))
                     .navigationTitle(package.name ?? "-")
             }
         }

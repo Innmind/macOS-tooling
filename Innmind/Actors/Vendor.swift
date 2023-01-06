@@ -47,6 +47,10 @@ actor Vendor {
         let graph: CLI.DependencyGraph
         let organization: String
         nonisolated let name: String
+        nonisolated let packagist: URL
+        nonisolated let github: URL?
+        nonisolated let actions: URL?
+        nonisolated let releases: URL?
         let stored: StoredPackage
 
         static let immutable = Vendor.innmind.package(StoredPackage(), "immutable")
@@ -63,6 +67,10 @@ actor Vendor {
             self.stored = stored
             self.organization = organization
             self.name = name
+            packagist = URL(string: "https://packagist.org/packages/\(organization)/\(name)")!
+            github = stored.repository
+            actions = github?.appendingPathComponent("/actions")
+            releases = github?.appendingPathComponent("/releases")
         }
 
         func dependencies() async -> Data? {

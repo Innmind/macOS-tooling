@@ -17,10 +17,6 @@ struct PackageGraphs: View {
     @State private var disableModifiers = false
     private let dependencies: Svg
     private let dependents: Svg
-    private let organization: String
-    private var github: URL? = nil
-    private var actions: URL? = nil
-    private var releases: URL? = nil
     private let package: Vendor.Package
     
     enum Tab {
@@ -28,17 +24,10 @@ struct PackageGraphs: View {
         case dependents
     }
 
-    init(organization: Organization, stored: StoredPackage) {
-        package = Vendor.innmind.package(stored, stored.name ?? "-")
-        self.organization = organization.name
+    init(package: Vendor.Package) {
+        self.package = package
         dependencies = Svg.dependencies(package)
         dependents = Svg.dependents(package)
-
-        if let github = stored.repository {
-            self.github = github
-            self.actions = github.appendingPathComponent("/actions")
-            self.releases = github.appendingPathComponent("/releases")
-        }
     }
     
     var body: some View {
@@ -54,25 +43,25 @@ struct PackageGraphs: View {
         }
         .toolbar {
             Button {
-                openURL(URL(string: "https://packagist.org/packages/"+organization+"/"+package.name)!)
+                openURL(package.packagist)
             } label: {
                 Text("Packagist")
             }
-            if let github {
+            if let github = package.github {
                 Button {
                     openURL(github)
                 } label: {
                     Text("Github")
                 }
             }
-            if let actions {
+            if let actions = package.actions {
                 Button {
                     openURL(actions)
                 } label: {
                     Text("Actions")
                 }
             }
-            if let releases {
+            if let releases = package.releases {
                 Button {
                     openURL(releases)
                 } label: {
@@ -115,6 +104,6 @@ struct PackageGraphs_Previews: PreviewProvider {
     static var package = StoredPackage()
 
     static var previews: some View {
-        PackageGraphs(organization: model.organization, stored: package)
+        PackageGraphs(package: .immutable)
     }
 }
