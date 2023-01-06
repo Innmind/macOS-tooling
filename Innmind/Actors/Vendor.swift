@@ -7,7 +7,7 @@
 
 import Foundation
 
-actor Vendor {
+actor Vendor: Hashable {
     let persistence: Persistence
     let graph: CLI.DependencyGraph
     let packagist: HTTP.Packagist
@@ -30,6 +30,15 @@ actor Vendor {
         self.graph = graph
         self.packagist = packagist
         self.name = name
+    }
+
+    static func == (lhs: Vendor, rhs: Vendor) -> Bool {
+        return lhs.name == rhs.name
+    }
+
+    nonisolated
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     func svg() async -> Data? {

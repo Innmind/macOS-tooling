@@ -31,6 +31,7 @@
 		CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B2273EA17A005C9ADA /* Svg.swift */; };
 		CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FFBBF29686C9C00730127 /* HTTP.swift */; };
 		CD9FFBC229687E2900730127 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FFBC129687E2900730127 /* App.swift */; };
+		CDC6C7C12968817800BE6D86 /* WindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6C7C02968817800BE6D86 /* WindowView.swift */; };
 		CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8E5F529670A610043BFF2 /* Packagist.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		CD8F91B2273EA17A005C9ADA /* Svg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Svg.swift; sourceTree = "<group>"; };
 		CD9FFBBF29686C9C00730127 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		CD9FFBC129687E2900730127 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		CDC6C7C02968817800BE6D86 /* WindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowView.swift; sourceTree = "<group>"; };
 		CDD8E5F529670A610043BFF2 /* Packagist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packagist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -212,6 +214,7 @@
 				CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */,
 				CD127C29272FDEA200CFEBB2 /* DependentsView.swift */,
 				CD46025C2741573E0080B1B3 /* LoadingView.swift */,
+				CDC6C7C02968817800BE6D86 /* WindowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				CD9FFBC229687E2900730127 /* App.swift in Sources */,
 				CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */,
 				CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */,
+				CDC6C7C12968817800BE6D86 /* WindowView.swift in Sources */,
 				CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */,
 				CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */,
 				CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */,
