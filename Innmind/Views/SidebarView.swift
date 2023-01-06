@@ -68,8 +68,16 @@ struct SidebarView: View {
                 VendorView(vendor: vendor)
                     .navigationTitle(vendor.name)
             case let .package(package):
-                PackageGraphs(package: vendor.package(package, package.name ?? "-"))
-                    .navigationTitle(package.name ?? "-")
+                if let name = package.name {
+                    PackageGraphs(package: vendor.package(package, name))
+                        .navigationTitle(name)
+                } else {
+                    // when reloading the list of packages we end up with StoredPackage
+                    // without a name for some reason so we display the whole vendor as
+                    // a default view
+                    VendorView(vendor: vendor)
+                        .navigationTitle(vendor.name)
+                }
             }
         }
     }
