@@ -15,6 +15,8 @@ struct PackageGraphs: View {
 
     @State private var zoom: Zoom = .max
     @State private var disableModifiers = false
+    private let dependencies: Svg
+    private let dependents: Svg
     private let organization: String
     private var github: URL? = nil
     private var actions: URL? = nil
@@ -29,6 +31,8 @@ struct PackageGraphs: View {
     init(organization: Organization, stored: StoredPackage) {
         package = Vendor.innmind.package(stored, stored.name ?? "-")
         self.organization = organization.name
+        dependencies = Svg.dependencies(package)
+        dependents = Svg.dependents(package)
 
         if let github = stored.repository {
             self.github = github
@@ -42,8 +46,10 @@ struct PackageGraphs: View {
             switch selection {
             case .dependencies:
                 DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                    .environmentObject(dependencies)
             case .dependents:
                 DependentsView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                    .environmentObject(dependents)
             }
         }
         .toolbar {

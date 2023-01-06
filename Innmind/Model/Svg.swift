@@ -9,64 +9,48 @@ import Foundation
 
 final class Svg: ObservableObject {
     @Published var content: Data?
-    let name: String
-    private let action: (CLI.DependencyGraph) async -> Data?
-    private let entity: StoredSvg?
+    private let action: () async -> Data?
 
-    private init(
-        _ name: String,
-        _ action: @escaping (CLI.DependencyGraph) async -> Data?,
-        _ entity: StoredSvg?
-    ) {
-        self.name = name
+    private init(_ action: @escaping () async -> Data?) {
         self.action = action
-        self.entity = entity
-        self.content = entity?.content
     }
 
-    static func dependencies(_ organization: Organization, _ package: StoredPackage) -> Svg {
+    static func dependencies(_ package: Vendor.Package) -> Svg {
         return .init(
-            package.name!,
-            { dg in
-                await dg.of(organization.name, package.name!)
-            },
-            package.dependencies
+            {
+                return await package.dependencies()
+            }
         )
     }
 
-    static func dependents(_ organization: Organization, _ package: StoredPackage) -> Svg {
+    static func dependents(_ package: Vendor.Package) -> Svg {
         return .init(
-            package.name!,
-            { dg in
-                await dg.dependsOn(organization.name, package.name!)
-            },
-            package.dependents
+            {
+                return await package.dependents()
+            }
         )
     }
 
     func load() {
-        fetch(entity)
+        fetch()
     }
 
     func reload() {
         content = nil
-        fetch(entity)
+        fetch()
     }
 
-    private func fetch(_ entity: StoredSvg?) {
+    private func fetch() {
         if (content != nil) {
             return
         }
 
         Task {
             let run = self.action
+            let svg = await run()
 
-            if let svg = await run(CLI.DependencyGraph.shared) {
-                DispatchQueue.main.async {
-                    self.content = svg
-                    entity?.content = svg
-                    Persistence.shared.save()
-                }
+            DispatchQueue.main.async {
+                self.content = svg
             }
         }
     }
