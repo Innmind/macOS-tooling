@@ -9,64 +9,54 @@ import Foundation
 
 final class Svg: ObservableObject {
     @Published var content: Data?
-    let name: String
-    private let action: (CLI.DependencyGraph) async -> Data?
-    private let entity: StoredSvg?
+    private let fetch: () async -> Data?
+    private let refetch: () async -> Data?
 
     private init(
-        _ name: String,
-        _ action: @escaping (CLI.DependencyGraph) async -> Data?,
-        _ entity: StoredSvg?
+        _ fetch: @escaping () async -> Data?,
+        _ refetch: @escaping () async -> Data?
     ) {
-        self.name = name
-        self.action = action
-        self.entity = entity
-        self.content = entity?.content
+        self.fetch = fetch
+        self.refetch = refetch
     }
 
-    static func dependencies(_ organization: Organization, _ package: StoredPackage) -> Svg {
+    static func dependencies(_ package: Vendor.Package) -> Svg {
         return .init(
-            package.name!,
-            { dg in
-                await dg.of(organization.name, package.name!)
+            {
+                return await package.dependencies()
             },
-            package.dependencies
+            {
+                return await package.reloadDependencies()
+            }
         )
     }
 
-    static func dependents(_ organization: Organization, _ package: StoredPackage) -> Svg {
+    static func dependents(_ package: Vendor.Package) -> Svg {
         return .init(
-            package.name!,
-            { dg in
-                await dg.dependsOn(organization.name, package.name!)
+            {
+                return await package.dependents()
             },
-            package.dependents
+            {
+                return await package.reloadDependents()
+            }
         )
     }
 
     func load() {
-        fetch(entity)
+        run(fetch)
     }
 
     func reload() {
         content = nil
-        fetch(entity)
+        run(refetch)
     }
 
-    private func fetch(_ entity: StoredSvg?) {
-        if (content != nil) {
-            return
-        }
-
+    private func run(_ action: @escaping () async -> Data?) {
         Task {
-            let run = self.action
+            let svg = await action()
 
-            if let svg = await run(CLI.DependencyGraph.shared) {
-                DispatchQueue.main.async {
-                    self.content = svg
-                    entity?.content = svg
-                    Persistence.shared.save()
-                }
+            DispatchQueue.main.async {
+                self.content = svg
             }
         }
     }

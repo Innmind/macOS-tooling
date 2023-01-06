@@ -23,7 +23,7 @@ final class CLI {
         }
 
         func dependsOn(_ organization: String, _ package: String) -> Data? {
-            return run(command+" depends-on \(organization)/\(package) --output")
+            return run(command+" depends-on \(organization)/\(package) \(organization) --output")
         }
 
         private func run(_ command: String) -> Data? {

@@ -8,20 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var model: ModelData
-
-    let vendor: Vendor
+    let app: Application
 
     var body: some View {
-        SidebarView(vendor: vendor)
-            .environmentObject(model)
+        SidebarView(app)
             .frame(minWidth: 600, minHeight: 400)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(vendor: .innmind)
-            .environmentObject(ModelData(Persistence.shared))
+        ContentView(app: .init(.shared, .shared))
     }
 }

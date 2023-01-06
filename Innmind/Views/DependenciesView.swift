@@ -15,33 +15,26 @@ struct DependenciesView: View {
     
     var body: some View {
         VStack {
-            switch self.svg.content {
-            case nil:
+            if let content = svg.content {
+                SvgView(content: content, zoom: $zoom)
+                    .onAppear {
+                        disableModifiers = false
+                    }
+            } else {
                 LoadingView()
                     .onAppear {
                         disableModifiers = true
                         self.svg.load()
                     }
-            default:
-                SvgView(content: self.svg.content!, zoom: $zoom)
-                    .onAppear {
-                        disableModifiers = false
-                    }
             }
         }
-            .navigationTitle(self.svg.name)
     }
 }
 
 struct DependenciesView_Previews: PreviewProvider {
-    static var model = ModelData(Persistence.shared)
-    static var package = StoredPackage()
-
     static var previews: some View {
         DependenciesView(disableModifiers: .constant(true), zoom: .constant(.max))
-            .environmentObject(Svg.dependencies(
-                Organization(displayName: "Innmind", name: "innmind"),
-                package
-            ))
+            .environmentObject(Svg.dependencies(.immutable))
+
     }
 }

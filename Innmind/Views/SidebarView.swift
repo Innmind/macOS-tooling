@@ -13,19 +13,16 @@ struct SidebarView: View {
         case package(StoredPackage)
     }
 
-    @EnvironmentObject var model: ModelData
-
-    @FetchRequest(
-        entity: StoredPackage.entity(),
-        sortDescriptors: [NSSortDescriptor(
-            keyPath: \StoredPackage.name,
-            ascending: true
-        )]
-    ) var storedPackages: FetchedResults<StoredPackage>
+    @State private var packages: [StoredPackage] = []
+    @State private var loading = false
 
     @State private var selected: Selected = .organization
 
     let vendor: Vendor
+
+    init(_ app: Application) {
+        vendor = app.vendors().first!
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -38,8 +35,8 @@ struct SidebarView: View {
                         .padding(.bottom, 10)
                         .font(.headline)
                 ) {
-                    if !model.loading {
-                        ForEach(storedPackages) { package in
+                    if !loading {
+                        ForEach(packages) { package in
                             NavigationLink(package.name!, value: Selected.package(package))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
@@ -55,19 +52,42 @@ struct SidebarView: View {
             .frame(minWidth: 200)
             .toolbar {
                 Button(action: {
-                    model.reloadPackages()
+                    loading = true
+                    packages = []
+                    Task {
+                        let fetched = await vendor.reloadPackages()
+                        DispatchQueue.main.async {
+                            packages = fetched
+                            loading = false
+                        }
+                    }
                 }) {
                     Image(systemName: "arrow.clockwise.circle")
                         .accessibilityLabel("Reload Packages")
                 }
-                    .disabled(model.loading)
+                    .disabled(loading)
+            }
+            .task {
+                loading = true
+                packages = await vendor.packages()
+                loading = false
             }
         } detail: {
             switch selected {
             case .organization:
                 VendorView(vendor: vendor)
+                    .navigationTitle(vendor.name)
             case let .package(package):
-                PackageGraphs(organization: model.organization, package: package)
+                if let name = package.name {
+                    PackageGraphs(package: vendor.package(package, name))
+                        .navigationTitle(name)
+                } else {
+                    // when reloading the list of packages we end up with StoredPackage
+                    // without a name for some reason so we display the whole vendor as
+                    // a default view
+                    VendorView(vendor: vendor)
+                        .navigationTitle(vendor.name)
+                }
             }
         }
     }
@@ -75,6 +95,6 @@ struct SidebarView: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView(vendor: .innmind).environmentObject(ModelData(Persistence.shared))
+        SidebarView(.init(.shared, .shared))
     }
 }

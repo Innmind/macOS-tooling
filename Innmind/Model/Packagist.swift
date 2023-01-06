@@ -14,7 +14,7 @@ struct Packagist {
         var id: Package { self }
     }
 
-    struct Organization: Hashable, Decodable {
+    struct Vendor: Hashable, Decodable {
         let packages: [Packagist.Package]
 
         private enum CodingKeys: String, CodingKey {

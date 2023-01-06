@@ -15,30 +15,19 @@ struct PackageGraphs: View {
 
     @State private var zoom: Zoom = .max
     @State private var disableModifiers = false
-    private var dependencies: Svg
-    private var dependents: Svg
-    private let organization: String
-    private let package: String
-    private var github: URL? = nil
-    private var actions: URL? = nil
-    private var releases: URL? = nil
+    private let dependencies: Svg
+    private let dependents: Svg
+    private let package: Vendor.Package
     
     enum Tab {
         case dependencies
         case dependents
     }
 
-    init(organization: Organization, package: StoredPackage) {
-        dependencies = Svg.dependencies(organization, package)
-        dependents = Svg.dependents(organization, package)
-        self.organization = organization.name
-        self.package = package.name ?? "package-name" // coalesce for the preview
-
-        if let github = package.repository {
-            self.github = github
-            self.actions = github.appendingPathComponent("/actions")
-            self.releases = github.appendingPathComponent("/releases")
-        }
+    init(package: Vendor.Package) {
+        self.package = package
+        dependencies = Svg.dependencies(package)
+        dependents = Svg.dependents(package)
     }
     
     var body: some View {
@@ -54,25 +43,25 @@ struct PackageGraphs: View {
         }
         .toolbar {
             Button {
-                openURL(URL(string: "https://packagist.org/packages/"+organization+"/"+package)!)
+                openURL(package.packagist)
             } label: {
                 Text("Packagist")
             }
-            if let github {
+            if let github = package.github {
                 Button {
                     openURL(github)
                 } label: {
                     Text("Github")
                 }
             }
-            if let actions {
+            if let actions = package.actions {
                 Button {
                     openURL(actions)
                 } label: {
                     Text("Actions")
                 }
             }
-            if let releases {
+            if let releases = package.releases {
                 Button {
                     openURL(releases)
                 } label: {
@@ -111,10 +100,7 @@ struct PackageGraphs: View {
 }
 
 struct PackageGraphs_Previews: PreviewProvider {
-    static var model = ModelData(Persistence.shared)
-    static var package = StoredPackage()
-
     static var previews: some View {
-        PackageGraphs(organization: model.organization, package: package)
+        PackageGraphs(package: .immutable)
     }
 }
