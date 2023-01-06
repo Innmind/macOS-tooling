@@ -14,10 +14,10 @@ final class HTTP {
         init() {
         }
 
-        func organization(_ name: String) async throws -> Innmind.Packagist.Organization {
+        func organization(_ name: String) async throws -> Innmind.Packagist.Vendor {
             let (data, _) = try await URLSession(configuration: .ephemeral).data(from: URL(string: "https://packagist.org/packages/list.json?vendor="+name+"&fields[]=repository&fields[]=abandoned")!)
 
-            return try JSONDecoder().decode(Innmind.Packagist.Organization.self, from: data)
+            return try JSONDecoder().decode(Innmind.Packagist.Vendor.self, from: data)
         }
     }
 }
