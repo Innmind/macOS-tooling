@@ -10,7 +10,7 @@ import Foundation
 actor Vendor {
     let persistence: Persistence
     let graph: CLI.DependencyGraph
-    let name: String
+    nonisolated let name: String
 
     static let innmind = Vendor(Persistence.shared, CLI.DependencyGraph.shared, "innmind")
 

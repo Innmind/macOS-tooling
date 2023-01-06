@@ -50,7 +50,6 @@ struct VendorView: View {
             }
                 .disabled(self.content == nil)
         }
-        .navigationTitle(self.vendor.name)
         .task {
             self.content = await vendor.svg()
         }

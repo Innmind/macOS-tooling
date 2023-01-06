@@ -66,8 +66,10 @@ struct SidebarView: View {
             switch selected {
             case .organization:
                 VendorView(vendor: vendor)
+                    .navigationTitle(vendor.name)
             case let .package(package):
                 PackageGraphs(organization: model.organization, stored: package)
+                    .navigationTitle(package.name ?? "-")
             }
         }
     }

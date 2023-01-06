@@ -45,10 +45,10 @@ struct PackageGraphs: View {
         VStack {
             switch selection {
             case .dependencies:
-                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                DependenciesView(disableModifiers: $disableModifiers, zoom: $zoom)
                     .environmentObject(dependencies)
             case .dependents:
-                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom, package: package)
+                DependentsView(disableModifiers: $disableModifiers, zoom: $zoom)
                     .environmentObject(dependents)
             }
         }

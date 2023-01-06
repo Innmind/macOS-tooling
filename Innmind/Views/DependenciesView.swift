@@ -12,7 +12,6 @@ struct DependenciesView: View {
 
     @Binding var disableModifiers: Bool
     @Binding var zoom: Zoom
-    let package: Vendor.Package
     
     var body: some View {
         VStack {
@@ -29,13 +28,12 @@ struct DependenciesView: View {
                     }
             }
         }
-            .navigationTitle(package.name)
     }
 }
 
 struct DependenciesView_Previews: PreviewProvider {
     static var previews: some View {
-        DependenciesView(disableModifiers: .constant(true), zoom: .constant(.max), package: .immutable)
+        DependenciesView(disableModifiers: .constant(true), zoom: .constant(.max))
             .environmentObject(Svg.dependencies(.immutable))
 
     }
