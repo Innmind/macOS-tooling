@@ -3,8 +3,8 @@
     <entity name="StoredPackage" representedClassName="StoredPackage" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
         <attribute name="repository" optional="YES" attributeType="URI"/>
-        <relationship name="dependencies" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="of" inverseEntity="StoredSvg"/>
-        <relationship name="dependents" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="dependsOn" inverseEntity="StoredSvg"/>
+        <relationship name="dependencies" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="of" inverseEntity="StoredSvg"/>
+        <relationship name="dependents" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="dependsOn" inverseEntity="StoredSvg"/>
     </entity>
     <entity name="StoredSvg" representedClassName="StoredSvg" syncable="YES" codeGenerationType="class">
         <attribute name="content" optional="YES" attributeType="Binary"/>

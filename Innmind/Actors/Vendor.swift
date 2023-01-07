@@ -215,8 +215,6 @@ actor Vendor: Hashable {
         // use this method only from the vendor managing this actor
         nonisolated
         func delete() {
-            persistence.container.viewContext.delete(stored.dependents!)
-            persistence.container.viewContext.delete(stored.dependencies!)
             persistence.container.viewContext.delete(stored)
         }
     }
