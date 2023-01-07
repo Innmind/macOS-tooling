@@ -9,13 +9,13 @@ import SwiftUI
 
 struct WindowView: View {
     @State private var selectedVendor: Vendor? = nil
-    @State private var selectedPackage: StoredPackage? = nil
+    @State private var selectedPackage: Vendor.Package? = nil
 
     let app: Application
 
     private var title: String {
         if let selectedPackage {
-            return selectedPackage.name ?? "-"
+            return selectedPackage.name
         }
 
         if let selectedVendor {
@@ -65,11 +65,11 @@ struct VendorsView: View {
 }
 
 struct PackagesView: View {
-    @Binding var selected: StoredPackage?
+    @Binding var selected: Vendor.Package?
 
     let vendor: Vendor
 
-    @State private var packages: [StoredPackage] = []
+    @State private var packages: [Vendor.Package] = []
     @State private var loading = false
 
     var body: some View {
@@ -99,7 +99,7 @@ struct PackagesView: View {
 
             if !loading {
                 ForEach(packages, id: \.self) { package in
-                    NavigationLink(package.name!, value: package)
+                    NavigationLink(package.name, value: package)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                 }
@@ -119,11 +119,11 @@ struct PackagesView: View {
 
 struct DisplayTargetSvgView: View {
     @Binding var vendor: Vendor?
-    @Binding var package: StoredPackage?
+    @Binding var package: Vendor.Package?
 
     var body: some View {
-        if let package, let name = package.name, let vendor {
-            PackageGraphs(package: vendor.package(package, name))
+        if let package {
+            PackageGraphs(package: package)
         } else if let vendor {
             VendorView(vendor: vendor)
         } else {

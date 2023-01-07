@@ -12,7 +12,7 @@ actor Vendor: Hashable {
     let graph: CLI.DependencyGraph
     let packagist: HTTP.Packagist
     nonisolated let name: String
-    var packages: [StoredPackage] = []
+    var packages: [Package] = []
 
     static let innmind = Vendor(
         Persistence.shared,
@@ -59,7 +59,7 @@ actor Vendor: Hashable {
         return await populate(stored).content
     }
 
-    func packages() async -> [StoredPackage] {
+    func packages() async -> [Package] {
         if (!packages.isEmpty) {
             return packages
         }
@@ -73,7 +73,7 @@ actor Vendor: Hashable {
                 .fetch(fetch)
 
             if !existing.isEmpty {
-                packages = Array<StoredPackage>(existing)
+                packages = Array<StoredPackage>(existing).map { package($0, $0.name!) }
 
                 return packages
             }
@@ -89,6 +89,7 @@ actor Vendor: Hashable {
                     a.name < b.name
                 })
                 .map { self.persistPackage($0) }
+                .map { package($0, $0.name!) }
             persistence.save()
 
             return packages
@@ -99,7 +100,7 @@ actor Vendor: Hashable {
         }
     }
 
-    func reloadPackages() async -> [StoredPackage] {
+    func reloadPackages() async -> [Package] {
         packages = []
 
         do {
@@ -130,6 +131,7 @@ actor Vendor: Hashable {
                     a.name < b.name
                 })
                 .map { self.persistPackage($0) }
+                .map { package($0, $0.name!) }
             persistence.save()
 
             return packages
@@ -140,15 +142,10 @@ actor Vendor: Hashable {
         }
     }
 
-    nonisolated
-    func package(_ stored: StoredPackage, _ package: String) -> Package {
-        return .init(persistence, graph, stored, name, package)
-    }
-
-    actor Package {
+    actor Package: Hashable {
         let persistence: Persistence
         let graph: CLI.DependencyGraph
-        let organization: String
+        nonisolated let organization: String
         nonisolated let name: String
         nonisolated let packagist: URL
         nonisolated let github: URL?
@@ -174,6 +171,16 @@ actor Vendor: Hashable {
             github = stored.repository
             actions = github?.appendingPathComponent("/actions")
             releases = github?.appendingPathComponent("/releases")
+        }
+
+        static func == (lhs: Package, rhs: Package) -> Bool {
+            return lhs.organization == rhs.organization && lhs.name == rhs.name
+        }
+
+        nonisolated
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(organization)
+            hasher.combine(name)
         }
 
         func dependencies() async -> Data? {
@@ -217,6 +224,11 @@ actor Vendor: Hashable {
 
             return svg
         }
+    }
+
+    nonisolated
+    private func package(_ stored: StoredPackage, _ package: String) -> Package {
+        return .init(persistence, graph, stored, name, package)
     }
 
     private func populate(_ stored: StoredSvg) async -> StoredSvg {
