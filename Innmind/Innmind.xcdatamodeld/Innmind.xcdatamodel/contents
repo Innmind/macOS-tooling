@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="StoredPackage" representedClassName="StoredPackage" syncable="YES" codeGenerationType="class">
-        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
         <attribute name="repository" optional="YES" attributeType="URI"/>
         <relationship name="dependencies" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="of" inverseEntity="StoredSvg"/>
         <relationship name="dependents" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="dependsOn" inverseEntity="StoredSvg"/>

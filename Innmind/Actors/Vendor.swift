@@ -73,7 +73,7 @@ actor Vendor: Hashable {
                 .fetch(fetch)
 
             if !existing.isEmpty {
-                packages = Array<StoredPackage>(existing).map { package($0, $0.name!) }
+                packages = Array<StoredPackage>(existing).map { package($0) }
 
                 return packages
             }
@@ -89,7 +89,7 @@ actor Vendor: Hashable {
                     a.name < b.name
                 })
                 .map { self.persistPackage($0) }
-                .map { package($0, $0.name!) }
+                .map { package($0) }
             persistence.save()
 
             return packages
@@ -113,7 +113,7 @@ actor Vendor: Hashable {
                     a.name < b.name
                 })
                 .map { self.persistPackage($0) }
-                .map { package($0, $0.name!) }
+                .map { package($0) }
             persistence.save()
 
             return packages
@@ -135,20 +135,25 @@ actor Vendor: Hashable {
         nonisolated let releases: URL?
         let stored: StoredPackage
 
-        static let immutable = Vendor.innmind.package(StoredPackage(), "immutable")
+        private static var storedImmutable: StoredPackage {
+            let package = StoredPackage()
+            package.name = "immutable"
+
+            return package
+        }
+        static let immutable = Vendor.innmind.package(Package.storedImmutable)
 
         init(
             _ persistence: Persistence,
             _ graph: CLI.DependencyGraph,
             _ stored: StoredPackage,
-            _ organization: String,
-            _ name: String
+            _ organization: String
         ) {
             self.persistence = persistence
             self.graph = graph
             self.stored = stored
             self.organization = organization
-            self.name = name
+            self.name = stored.name!
             packagist = URL(string: "https://packagist.org/packages/\(organization)/\(name)")!
             github = stored.repository
             actions = github?.appendingPathComponent("/actions")
@@ -217,8 +222,8 @@ actor Vendor: Hashable {
     }
 
     nonisolated
-    private func package(_ stored: StoredPackage, _ package: String) -> Package {
-        return .init(persistence, graph, stored, name, package)
+    private func package(_ stored: StoredPackage) -> Package {
+        return .init(persistence, graph, stored, name)
     }
 
     private func populate(_ stored: StoredSvg) async -> StoredSvg {
