@@ -238,6 +238,7 @@ actor Vendor: Hashable {
     private func persistPackage(_ package: Innmind.Packagist.Package) -> StoredPackage {
         let storedPackage = StoredPackage(context: persistence.container.viewContext)
         storedPackage.name = String(package.name.dropFirst(name.count + 1))
+        storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: persistence.container.viewContext)
         storedPackage.dependents = StoredSvg(context: persistence.container.viewContext)
 
