@@ -12,6 +12,7 @@ actor Vendor: Hashable {
     let graph: CLI.DependencyGraph
     let packagist: HTTP.Packagist
     nonisolated let name: String
+    var packages: [StoredPackage] = []
 
     static let innmind = Vendor(
         Persistence.shared,
@@ -59,6 +60,10 @@ actor Vendor: Hashable {
     }
 
     func packages() async -> [StoredPackage] {
+        if (!packages.isEmpty) {
+            return packages
+        }
+
         let fetch = StoredPackage.fetchRequest()
         fetch.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
         do {
@@ -68,14 +73,16 @@ actor Vendor: Hashable {
                 .fetch(fetch)
 
             if !existing.isEmpty {
-                return Array<StoredPackage>(existing)
+                packages = Array<StoredPackage>(existing)
+
+                return packages
             }
         } catch {
             // let refetch from packagist
         }
 
         do {
-            let packages = try await packagist
+            packages = try await packagist
                 .organization(name)
                 .packages
                 .sorted(by: { a, b in
@@ -93,6 +100,8 @@ actor Vendor: Hashable {
     }
 
     func reloadPackages() async -> [StoredPackage] {
+        packages = []
+
         do {
             try persistence
                 .container
@@ -114,7 +123,7 @@ actor Vendor: Hashable {
         }
 
         do {
-            let packages = try await packagist
+            packages = try await packagist
                 .organization(name)
                 .packages
                 .sorted(by: { a, b in
