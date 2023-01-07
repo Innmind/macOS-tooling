@@ -174,6 +174,9 @@ struct PackagesView: View {
         }
             .task {
                 loading = true
+                // remove selection as one may have been selected previously if the
+                // user watched a package from a different vendor
+                selected = nil
                 packages = await vendor.packages()
                 loading = false
             }
