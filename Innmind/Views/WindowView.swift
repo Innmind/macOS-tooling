@@ -27,7 +27,7 @@ struct WindowView: View {
 
     var body: some View {
         NavigationSplitView {
-            VendorsView(selected: $selectedVendor, app: app)
+            VendorsView(selectedVendor: $selectedVendor, selectedPackage: $selectedPackage, app: app)
         } content: {
             if let vendor = selectedVendor {
                 PackagesView(selected: $selectedPackage, vendor: vendor)
@@ -42,7 +42,8 @@ struct WindowView: View {
 }
 
 struct VendorsView: View {
-    @Binding var selected: Vendor?
+    @Binding var selectedVendor: Vendor?
+    @Binding var selectedPackage: Vendor.Package?
     @State private var vendors: [Vendor] = []
     @State private var new = false
     @State private var newVendor: String = ""
@@ -53,7 +54,7 @@ struct VendorsView: View {
     var body: some View {
         HStack {
             Button{
-                edit = !edit
+                edit.toggle()
             } label: {
                 Text("Edit")
                     .accessibilityLabel("Edit Vendors")
@@ -70,15 +71,21 @@ struct VendorsView: View {
         }
             .padding(.horizontal, 10)
             .padding(.vertical, 10)
-        List(selection: $selected) {
+        List(selection: $selectedVendor) {
             ForEach(vendors, id: \.self) { vendor in
                 HStack {
                     if edit {
                         Button {
                             Task {
+                                if selectedVendor == vendor {
+                                    selectedPackage = nil
+                                    selectedVendor = nil
+                                }
+
                                 let actors = await app.deleteVendor(vendor)
                                 DispatchQueue.main.async {
                                     vendors = actors
+                                    edit = !actors.isEmpty
                                 }
                             }
                         } label: {
@@ -96,7 +103,7 @@ struct VendorsView: View {
             .task {
                 vendors = await app.vendors()
                 if let first = vendors.first {
-                    selected = first
+                    selectedVendor = first
                 }
             }
             .alert("Add Vendor", isPresented: $new) {
