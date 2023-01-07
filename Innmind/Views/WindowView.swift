@@ -30,12 +30,12 @@ struct WindowView: View {
             VendorsView(selectedVendor: $selectedVendor, selectedPackage: $selectedPackage, app: app)
         } content: {
             if let vendor = selectedVendor {
-                PackagesView(selected: $selectedPackage, vendor: vendor)
+                PackagesView(selected: $selectedPackage, vendor: vendor).id(vendor.name)
             } else {
                 Text("Select a vendor")
             }
         } detail: {
-            DisplayTargetSvgView(vendor: $selectedVendor, package: $selectedPackage)
+            DisplayTargetSvgView(vendor: $selectedVendor, package: $selectedPackage).id(selectedVendor?.name)
         }
             .navigationTitle(title)
     }
