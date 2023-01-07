@@ -73,30 +73,31 @@ struct PackagesView: View {
     @State private var loading = false
 
     var body: some View {
-        List(selection: $selected) {
-            Button(action: {
-                loading = true
-                selected = nil
-                packages = []
-                Task {
-                    let fetched = await vendor.reloadPackages()
-                    DispatchQueue.main.async {
-                        packages = fetched
-                        loading = false
-                    }
+        Button(action: {
+            loading = true
+            selected = nil
+            packages = []
+            Task {
+                let fetched = await vendor.reloadPackages()
+                DispatchQueue.main.async {
+                    packages = fetched
+                    loading = false
                 }
-            }) {
-                HStack {
-                    Image(systemName: "arrow.clockwise.circle")
-                        .accessibilityLabel("Reload Packages")
-
-                    Text("Reload packages")
-                }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 10)
             }
-                .disabled(loading)
+        }) {
+            HStack {
+                Image(systemName: "arrow.clockwise.circle")
+                    .accessibilityLabel("Reload Packages")
 
+                Text("Reload packages")
+            }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
+        }
+            .disabled(loading)
+            .padding(.top, 10)
+
+        List(selection: $selected) {
             if !loading {
                 ForEach(packages, id: \.self) { package in
                     NavigationLink(package.name, value: package)
