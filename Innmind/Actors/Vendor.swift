@@ -98,7 +98,15 @@ actor Vendor: Hashable {
                 .container
                 .viewContext
                 .fetch(StoredPackage.fetchRequest())
-                .forEach { persistence.container.viewContext.delete($0) }
+                .forEach {
+                    if let dependents = $0.dependents {
+                        persistence.container.viewContext.delete(dependents)
+                    }
+                    if let dependencies = $0.dependencies {
+                        persistence.container.viewContext.delete(dependencies)
+                    }
+                    persistence.container.viewContext.delete($0)
+                }
         } catch {
             print("failed to delete packages")
 
