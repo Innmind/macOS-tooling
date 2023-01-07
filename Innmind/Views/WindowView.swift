@@ -90,7 +90,7 @@ struct DisplayTargetSvgView: View {
         if let package {
             Text(package.name!)
         } else if let vendor {
-            Text(vendor.name)
+            VendorView(vendor: vendor)
         } else {
             EmptyView()
         }
