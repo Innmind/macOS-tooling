@@ -11,26 +11,21 @@ actor Vendor: Hashable {
     let persistence: Persistence
     let graph: CLI.DependencyGraph
     let packagist: HTTP.Packagist
+    var stored: StoredVendor
     nonisolated let name: String
     var packages: [Package] = []
-
-    static let innmind = Vendor(
-        Persistence.shared,
-        CLI.DependencyGraph.shared,
-        HTTP.Packagist.shared,
-        "innmind"
-    )
 
     init(
         _ persistence: Persistence,
         _ graph: CLI.DependencyGraph,
         _ packagist: HTTP.Packagist,
-        _ name: String
+        _ stored: StoredVendor
     ) {
         self.persistence = persistence
         self.graph = graph
         self.packagist = packagist
-        self.name = name
+        self.stored = stored
+        self.name = stored.name!
     }
 
     static func == (lhs: Vendor, rhs: Vendor) -> Bool {
@@ -43,20 +38,17 @@ actor Vendor: Hashable {
     }
 
     func svg() async -> Data? {
-        let stored = loadSvg()
-
-        if let data = stored.content {
+        if let data = stored.svg?.content {
             return data
         }
 
-        return await populate(stored).content
+        return await populate(stored.svg!).content
     }
 
     func reload() async -> Data? {
-        let stored = loadSvg()
-        stored.content = nil
+        stored.svg?.content = nil
 
-        return await populate(stored).content
+        return await populate(stored.svg!).content
     }
 
     func packages() async -> [Package] {
@@ -64,21 +56,15 @@ actor Vendor: Hashable {
             return packages
         }
 
-        let fetch = StoredPackage.fetchRequest()
-        fetch.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        do {
-            let existing = try persistence
-                .container
-                .viewContext
-                .fetch(fetch)
+        let existing = stored.packages as? Set<StoredPackage> ?? []
+        packages = existing
+            .sorted(by: { a, b in
+                return a.name! < b.name!
+            })
+            .map { package($0) }
 
-            if !existing.isEmpty {
-                packages = Array<StoredPackage>(existing).map { package($0) }
-
-                return packages
-            }
-        } catch {
-            // let refetch from packagist
+        if !packages.isEmpty {
+            return packages
         }
 
         do {
@@ -134,14 +120,6 @@ actor Vendor: Hashable {
         nonisolated let actions: URL?
         nonisolated let releases: URL?
         let stored: StoredPackage
-
-        private static var storedImmutable: StoredPackage {
-            let package = StoredPackage()
-            package.name = "immutable"
-
-            return package
-        }
-        static let immutable = Vendor.innmind.package(Package.storedImmutable)
 
         init(
             _ persistence: Persistence,
@@ -233,36 +211,13 @@ actor Vendor: Hashable {
         return stored
     }
 
-    private func loadSvg() -> StoredSvg {
-        do {
-            let request = StoredSvg.fetchRequest()
-            request.predicate = NSPredicate(format: "organization == %@", name)
-
-            let existing = try persistence
-                .container
-                .viewContext
-                .fetch(request)
-                .first
-
-            if let existing {
-                return existing
-            }
-        } catch {
-            // let the outside scope build the default svg
-        }
-
-        let svg = StoredSvg(context: persistence.container.viewContext)
-        svg.organization = name
-
-        return svg
-    }
-
     private func persistPackage(_ package: Innmind.Packagist.Package) -> StoredPackage {
         let storedPackage = StoredPackage(context: persistence.container.viewContext)
         storedPackage.name = String(package.name.dropFirst(name.count + 1))
         storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: persistence.container.viewContext)
         storedPackage.dependents = StoredSvg(context: persistence.container.viewContext)
+        stored.addToPackages(storedPackage)
 
         return storedPackage
     }

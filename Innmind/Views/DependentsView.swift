@@ -30,10 +30,3 @@ struct DependentsView: View {
         }
     }
 }
-
-struct DependentsView_Previews: PreviewProvider {
-    static var previews: some View {
-        DependentsView(disableModifiers: .constant(true), zoom: .constant(.max))
-            .environmentObject(Svg.dependents(.immutable))
-    }
-}

@@ -44,10 +44,24 @@ struct WindowView: View {
 struct VendorsView: View {
     @Binding var selected: Vendor?
     @State private var vendors: [Vendor] = []
+    @State private var modify = false
+    @State private var newVendor: String = ""
 
     let app: Application
 
     var body: some View {
+        Button{
+            modify = true
+        } label: {
+            HStack {
+                Image(systemName: "plus.circle")
+                    .accessibilityLabel("Add Vendor")
+
+                Text("Add Vendor")
+            }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 10)
+        }
         List(selection: $selected) {
             ForEach(vendors, id: \.self) { vendor in
                 NavigationLink(vendor.name, value: vendor)
@@ -56,9 +70,22 @@ struct VendorsView: View {
             }
         }
             .task {
-                vendors = app.vendors()
+                vendors = await app.vendors()
                 if let first = vendors.first {
                     selected = first
+                }
+            }
+            .alert("Add Vendor", isPresented: $modify) {
+                TextField("Add Vendor", text: $newVendor)
+                    .padding(10)
+                    .autocorrectionDisabled()
+                Button("OK") {
+                    Task {
+                        let actors = await app.addVendor(newVendor)
+                        DispatchQueue.main.async {
+                            vendors = actors
+                        }
+                    }
                 }
             }
     }
@@ -130,11 +157,5 @@ struct DisplayTargetSvgView: View {
         } else {
             EmptyView()
         }
-    }
-}
-
-struct WindowView_Previews: PreviewProvider {
-    static var previews: some View {
-        WindowView(app: .init(.shared, .shared))
     }
 }

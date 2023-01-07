@@ -5,11 +5,18 @@
         <attribute name="repository" optional="YES" attributeType="URI"/>
         <relationship name="dependencies" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="of" inverseEntity="StoredSvg"/>
         <relationship name="dependents" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="dependsOn" inverseEntity="StoredSvg"/>
+        <relationship name="vendor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredVendor" inverseName="packages" inverseEntity="StoredVendor"/>
     </entity>
     <entity name="StoredSvg" representedClassName="StoredSvg" syncable="YES" codeGenerationType="class">
         <attribute name="content" optional="YES" attributeType="Binary"/>
         <attribute name="organization" optional="YES" attributeType="String"/>
         <relationship name="dependsOn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredPackage" inverseName="dependents" inverseEntity="StoredPackage"/>
         <relationship name="of" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredPackage" inverseName="dependencies" inverseEntity="StoredPackage"/>
+        <relationship name="vendor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoredVendor" inverseName="svg" inverseEntity="StoredVendor"/>
+    </entity>
+    <entity name="StoredVendor" representedClassName="StoredVendor" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="packages" toMany="YES" deletionRule="Cascade" destinationEntity="StoredPackage" inverseName="vendor" inverseEntity="StoredPackage"/>
+        <relationship name="svg" maxCount="1" deletionRule="Cascade" destinationEntity="StoredSvg" inverseName="vendor" inverseEntity="StoredSvg"/>
     </entity>
 </model>

@@ -55,9 +55,3 @@ struct VendorView: View {
         }
     }
 }
-
-struct VendorView_Previews: PreviewProvider {
-    static var previews: some View {
-        VendorView(vendor: .innmind)
-    }
-}
