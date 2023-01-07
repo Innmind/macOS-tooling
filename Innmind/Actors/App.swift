@@ -51,6 +51,9 @@ actor Application {
         persistence.save()
 
         vendorActors.append(.init(persistence, graph, packagist, stored))
+        vendorActors.sort(by: { a, b in
+            return a.name < b.name
+        })
 
         return vendorActors
     }
