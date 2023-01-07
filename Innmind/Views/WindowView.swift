@@ -57,6 +57,9 @@ struct VendorsView: View {
         }
             .task {
                 vendors = app.vendors()
+                if let first = vendors.first {
+                    selected = first
+                }
             }
     }
 }
