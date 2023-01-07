@@ -101,27 +101,9 @@ actor Vendor: Hashable {
     }
 
     func reloadPackages() async -> [Package] {
+        packages.forEach { $0.delete() }
         packages = []
-
-        do {
-            try persistence
-                .container
-                .viewContext
-                .fetch(StoredPackage.fetchRequest())
-                .forEach {
-                    if let dependents = $0.dependents {
-                        persistence.container.viewContext.delete(dependents)
-                    }
-                    if let dependencies = $0.dependencies {
-                        persistence.container.viewContext.delete(dependencies)
-                    }
-                    persistence.container.viewContext.delete($0)
-                }
-        } catch {
-            print("failed to delete packages")
-
-            return []
-        }
+        persistence.save()
 
         do {
             packages = try await packagist
@@ -223,6 +205,14 @@ actor Vendor: Hashable {
             persistence.save()
 
             return svg
+        }
+
+        // use this method only from the vendor managing this actor
+        nonisolated
+        func delete() {
+            persistence.container.viewContext.delete(stored.dependents!)
+            persistence.container.viewContext.delete(stored.dependencies!)
+            persistence.container.viewContext.delete(stored)
         }
     }
 
