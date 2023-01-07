@@ -87,8 +87,8 @@ struct DisplayTargetSvgView: View {
     @Binding var package: StoredPackage?
 
     var body: some View {
-        if let package {
-            Text(package.name!)
+        if let package, let name = package.name, let vendor {
+            PackageGraphs(package: vendor.package(package, name))
         } else if let vendor {
             VendorView(vendor: vendor)
         } else {
