@@ -67,17 +67,49 @@ struct PackagesView: View {
     let vendor: Vendor
 
     @State private var packages: [StoredPackage] = []
+    @State private var loading = false
 
     var body: some View {
         List(selection: $selected) {
-            ForEach(packages, id: \.self) { package in
-                NavigationLink(package.name!, value: package)
+            Button(action: {
+                loading = true
+                selected = nil
+                packages = []
+                Task {
+                    let fetched = await vendor.reloadPackages()
+                    DispatchQueue.main.async {
+                        packages = fetched
+                        loading = false
+                    }
+                }
+            }) {
+                HStack {
+                    Image(systemName: "arrow.clockwise.circle")
+                        .accessibilityLabel("Reload Packages")
+
+                    Text("Reload packages")
+                }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+            }
+                .disabled(loading)
+
+            if !loading {
+                ForEach(packages, id: \.self) { package in
+                    NavigationLink(package.name!, value: package)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                }
+            } else {
+                LoadingView()
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
             }
         }
             .task {
+                loading = true
                 packages = await vendor.packages()
+                loading = false
             }
     }
 }
