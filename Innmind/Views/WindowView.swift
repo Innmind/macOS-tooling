@@ -115,6 +115,9 @@ struct VendorsView: View {
                         let actors = await app.addVendor(newVendor)
                         DispatchQueue.main.async {
                             vendors = actors
+                            if selectedVendor == nil, let first = vendors.first {
+                                selectedVendor = first
+                            }
                         }
                     }
                 }
