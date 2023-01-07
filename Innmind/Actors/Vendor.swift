@@ -110,6 +110,12 @@ actor Vendor: Hashable {
         }
     }
 
+    // use this method only from the app managing this actor
+    func delete() {
+        persistence.container.viewContext.delete(stored)
+        persistence.save()
+    }
+
     actor Package: Hashable {
         let persistence: Persistence
         let graph: CLI.DependencyGraph

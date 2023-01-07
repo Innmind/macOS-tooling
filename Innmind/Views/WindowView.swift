@@ -44,27 +44,51 @@ struct WindowView: View {
 struct VendorsView: View {
     @Binding var selected: Vendor?
     @State private var vendors: [Vendor] = []
-    @State private var modify = false
+    @State private var new = false
     @State private var newVendor: String = ""
+    @State private var edit = false
 
     let app: Application
 
     var body: some View {
-        Button{
-            modify = true
-        } label: {
-            HStack {
+        HStack {
+            Button{
+                edit = !edit
+            } label: {
+                Text("Edit")
+                    .accessibilityLabel("Edit Vendors")
+            }
+                .buttonStyle(.link)
+            Spacer()
+            Button{
+                new = true
+            } label: {
                 Image(systemName: "plus.circle")
                     .accessibilityLabel("Add Vendor")
-
-                Text("Add Vendor")
             }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 10)
+                .buttonStyle(.link)
         }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 10)
         List(selection: $selected) {
             ForEach(vendors, id: \.self) { vendor in
-                NavigationLink(vendor.name, value: vendor)
+                HStack {
+                    if edit {
+                        Button {
+                            Task {
+                                let actors = await app.deleteVendor(vendor)
+                                DispatchQueue.main.async {
+                                    vendors = actors
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "minus.circle")
+                                .foregroundColor(.red)
+                        }
+                            .buttonStyle(.plain)
+                    }
+                    NavigationLink(vendor.name, value: vendor)
+                }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
             }
@@ -75,7 +99,7 @@ struct VendorsView: View {
                     selected = first
                 }
             }
-            .alert("Add Vendor", isPresented: $modify) {
+            .alert("Add Vendor", isPresented: $new) {
                 TextField("Add Vendor", text: $newVendor)
                     .padding(10)
                     .autocorrectionDisabled()
@@ -123,6 +147,7 @@ struct PackagesView: View {
         }
             .disabled(loading)
             .padding(.top, 10)
+            .buttonStyle(.link)
 
         List(selection: $selected) {
             if !loading {

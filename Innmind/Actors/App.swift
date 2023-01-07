@@ -54,4 +54,11 @@ actor Application {
 
         return vendorActors
     }
+
+    func deleteVendor(_ vendor: Vendor) async -> [Vendor] {
+        await vendor.delete()
+        vendorActors.removeAll(where: { $0 == vendor })
+
+        return vendorActors
+    }
 }
