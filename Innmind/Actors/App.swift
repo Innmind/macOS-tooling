@@ -33,9 +33,7 @@ actor Application {
                 .container
                 .viewContext
                 .fetch(StoredVendor.fetchRequest())
-                .sorted(by: { a, b in
-                    return a.name! < b.name!
-                })
+                .sorted(by: { $0.name! < $1.name! })
                 .map { Vendor(persistence, graph, packagist, $0) }
         } catch {
             return []
@@ -59,9 +57,7 @@ actor Application {
         persistence.save()
 
         vendorActors.append(.init(persistence, graph, packagist, stored))
-        vendorActors.sort(by: { a, b in
-            return a.name < b.name
-        })
+        vendorActors.sort(by: { $0.name < $1.name })
 
         return vendorActors
     }

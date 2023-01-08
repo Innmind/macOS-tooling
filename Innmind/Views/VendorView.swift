@@ -23,10 +23,10 @@ struct VendorView: View {
             }
         }
         .toolbar {
-            Button(action: {openUrl(URL(string: "https://packagist.org/packages/"+self.vendor.name+"/")!)}) {
+            Button {openUrl(URL(string: "https://packagist.org/packages/"+self.vendor.name+"/")!)} label: {
                 Text("Packagist")
             }
-            Button(action: {openUrl(URL(string: "https://github.com/"+self.vendor.name)!)}) {
+            Button {openUrl(URL(string: "https://github.com/"+self.vendor.name)!)} label: {
                 Text("Github")
             }
             HStack {
@@ -39,12 +39,12 @@ struct VendorView: View {
             }
                 .pickerStyle(SegmentedPickerStyle())
                 .disabled(self.content == nil)
-            Button(action: {
+            Button {
                 content = nil
                 Task {
                     await vendor.reload()
                 }
-            }) {
+            } label: {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }

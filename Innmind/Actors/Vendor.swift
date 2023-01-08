@@ -58,9 +58,7 @@ actor Vendor: Hashable {
 
         let existing = stored.packages as? Set<StoredPackage> ?? []
         packages = existing
-            .sorted(by: { a, b in
-                return a.name! < b.name!
-            })
+            .sorted(by: { $0.name! < $1.name! })
             .map { package($0) }
 
         if !packages.isEmpty {
@@ -71,9 +69,7 @@ actor Vendor: Hashable {
             packages = try await packagist
                 .organization(name)
                 .packages
-                .sorted(by: { a, b in
-                    a.name < b.name
-                })
+                .sorted(by: { $0.name < $1.name })
                 .map { self.persistPackage($0) }
                 .map { package($0) }
             persistence.save()
@@ -95,9 +91,7 @@ actor Vendor: Hashable {
             packages = try await packagist
                 .organization(name)
                 .packages
-                .sorted(by: { a, b in
-                    a.name < b.name
-                })
+                .sorted(by: { $0.name < $1.name })
                 .map { self.persistPackage($0) }
                 .map { package($0) }
             persistence.save()

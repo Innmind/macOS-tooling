@@ -54,19 +54,19 @@ struct VendorsView: View {
 
     var body: some View {
         HStack {
-            Button{
+            Button {
                 edit.toggle()
             } label: {
                 Text("Edit")
-                    .accessibilityLabel("Edit Vendors")
+                    .accessibilityLabel("Edit vendors")
             }
                 .buttonStyle(.link)
             Spacer()
-            Button{
+            Button {
                 new = true
             } label: {
                 Image(systemName: "plus.circle")
-                    .accessibilityLabel("Add Vendor")
+                    .accessibilityLabel("Add a vendor")
             }
                 .buttonStyle(.link)
         }
@@ -107,8 +107,8 @@ struct VendorsView: View {
                     selectedVendor = first
                 }
             }
-            .alert("Add Vendor", isPresented: $new) {
-                TextField("Add Vendor", text: $newVendor)
+            .alert("Add a vendor", isPresented: $new) {
+                TextField("Add a vendor", text: $newVendor)
                     .padding(10)
                     .autocorrectionDisabled()
                 Button("OK") {
@@ -135,7 +135,7 @@ struct PackagesView: View {
     @State private var loading = false
 
     var body: some View {
-        Button(action: {
+        Button {
             loading = true
             selected = nil
             packages = []
@@ -146,7 +146,7 @@ struct PackagesView: View {
                     loading = false
                 }
             }
-        }) {
+        } label: {
             HStack {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Packages")
