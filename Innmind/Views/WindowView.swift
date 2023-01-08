@@ -28,6 +28,7 @@ struct WindowView: View {
     var body: some View {
         NavigationSplitView {
             VendorsView(selectedVendor: $selectedVendor, selectedPackage: $selectedPackage, app: app)
+                .frame(minWidth: 200)
         } content: {
             if let vendor = selectedVendor {
                 PackagesView(selected: $selectedPackage, vendor: vendor).id(vendor.name)
