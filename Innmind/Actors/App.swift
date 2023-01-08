@@ -45,6 +45,14 @@ actor Application {
     }
 
     func addVendor(_ name: String) -> [Vendor] {
+        if name.isEmpty {
+            return vendorActors
+        }
+
+        if vendorActors.first(where: { $0.name == name }) != nil {
+            return vendorActors
+        }
+
         let stored = StoredVendor(context: persistence.container.viewContext)
         stored.name = name
         stored.svg = StoredSvg(context: persistence.container.viewContext)
