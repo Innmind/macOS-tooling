@@ -7,122 +7,119 @@
 
 import Foundation
 
-actor Vendor {
+actor Vendor: Hashable {
     let persistence: Persistence
     let graph: CLI.DependencyGraph
     let packagist: HTTP.Packagist
+    var stored: StoredVendor
     nonisolated let name: String
-
-    static let innmind = Vendor(
-        Persistence.shared,
-        CLI.DependencyGraph.shared,
-        HTTP.Packagist.shared,
-        "innmind"
-    )
+    var packages: [Package] = []
 
     init(
         _ persistence: Persistence,
         _ graph: CLI.DependencyGraph,
         _ packagist: HTTP.Packagist,
-        _ name: String
+        _ stored: StoredVendor
     ) {
         self.persistence = persistence
         self.graph = graph
         self.packagist = packagist
-        self.name = name
+        self.stored = stored
+        self.name = stored.name!
     }
 
-    func svg() async -> Data? {
-        let stored = loadSvg()
-
-        if let data = stored.content {
-            return data
-        }
-
-        return await populate(stored).content
-    }
-
-    func reload() async -> Data? {
-        let stored = loadSvg()
-        stored.content = nil
-
-        return await populate(stored).content
-    }
-
-    func packages() async -> [StoredPackage] {
-        let fetch = StoredPackage.fetchRequest()
-        fetch.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]
-        do {
-            let existing = try persistence
-                .container
-                .viewContext
-                .fetch(fetch)
-
-            if !existing.isEmpty {
-                return Array<StoredPackage>(existing)
-            }
-        } catch {
-            // let refetch from packagist
-        }
-
-        do {
-            let packages = try await packagist
-                .organization(name)
-                .packages
-                .sorted(by: { a, b in
-                    a.name < b.name
-                })
-                .map { self.persistPackage($0) }
-            persistence.save()
-
-            return packages
-        } catch {
-            print("Failed to fetch from packagist")
-
-            return []
-        }
-    }
-
-    func reloadPackages() async -> [StoredPackage] {
-        do {
-            try persistence
-                .container
-                .viewContext
-                .fetch(StoredPackage.fetchRequest())
-                .forEach { persistence.container.viewContext.delete($0) }
-        } catch {
-            print("failed to delete packages")
-
-            return []
-        }
-
-        do {
-            let packages = try await packagist
-                .organization(name)
-                .packages
-                .sorted(by: { a, b in
-                    a.name < b.name
-                })
-                .map { self.persistPackage($0) }
-            persistence.save()
-
-            return packages
-        } catch {
-            print("Failed to fetch from packagist")
-
-            return []
-        }
+    static func == (lhs: Vendor, rhs: Vendor) -> Bool {
+        return lhs.name == rhs.name
     }
 
     nonisolated
-    func package(_ stored: StoredPackage, _ package: String) -> Package {
-        return .init(persistence, graph, stored, name, package)
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
-    actor Package {
+    func svg() async -> Data? {
+        if let data = stored.svg?.content {
+            return data
+        }
+
+        return await populate(stored.svg!).content
+    }
+
+    func reload() async -> Data? {
+        stored.svg?.content = nil
+
+        return await populate(stored.svg!).content
+    }
+
+    func packages() async -> [Package] {
+        if (!packages.isEmpty) {
+            return packages
+        }
+
+        let existing = stored.packages as? Set<StoredPackage> ?? []
+        packages = existing
+            .sorted(by: { a, b in
+                return a.name! < b.name!
+            })
+            .map { package($0) }
+
+        if !packages.isEmpty {
+            return packages
+        }
+
+        do {
+            packages = try await packagist
+                .organization(name)
+                .packages
+                .sorted(by: { a, b in
+                    a.name < b.name
+                })
+                .map { self.persistPackage($0) }
+                .map { package($0) }
+            persistence.save()
+
+            return packages
+        } catch {
+            print("Failed to fetch from packagist")
+
+            return []
+        }
+    }
+
+    func reloadPackages() async -> [Package] {
+        packages.forEach { $0.delete() }
+        packages = []
+        persistence.save()
+
+        do {
+            packages = try await packagist
+                .organization(name)
+                .packages
+                .sorted(by: { a, b in
+                    a.name < b.name
+                })
+                .map { self.persistPackage($0) }
+                .map { package($0) }
+            persistence.save()
+
+            return packages
+        } catch {
+            print("Failed to fetch from packagist")
+
+            return []
+        }
+    }
+
+    // use this method only from the app managing this actor
+    func delete() {
+        persistence.container.viewContext.delete(stored)
+        persistence.save()
+    }
+
+    actor Package: Hashable {
         let persistence: Persistence
         let graph: CLI.DependencyGraph
-        let organization: String
+        nonisolated let organization: String
         nonisolated let name: String
         nonisolated let packagist: URL
         nonisolated let github: URL?
@@ -130,24 +127,31 @@ actor Vendor {
         nonisolated let releases: URL?
         let stored: StoredPackage
 
-        static let immutable = Vendor.innmind.package(StoredPackage(), "immutable")
-
         init(
             _ persistence: Persistence,
             _ graph: CLI.DependencyGraph,
             _ stored: StoredPackage,
-            _ organization: String,
-            _ name: String
+            _ organization: String
         ) {
             self.persistence = persistence
             self.graph = graph
             self.stored = stored
             self.organization = organization
-            self.name = name
+            self.name = stored.name!
             packagist = URL(string: "https://packagist.org/packages/\(organization)/\(name)")!
             github = stored.repository
             actions = github?.appendingPathComponent("/actions")
             releases = github?.appendingPathComponent("/releases")
+        }
+
+        static func == (lhs: Package, rhs: Package) -> Bool {
+            return lhs.organization == rhs.organization && lhs.name == rhs.name
+        }
+
+        nonisolated
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(organization)
+            hasher.combine(name)
         }
 
         func dependencies() async -> Data? {
@@ -191,6 +195,17 @@ actor Vendor {
 
             return svg
         }
+
+        // use this method only from the vendor managing this actor
+        nonisolated
+        func delete() {
+            persistence.container.viewContext.delete(stored)
+        }
+    }
+
+    nonisolated
+    private func package(_ stored: StoredPackage) -> Package {
+        return .init(persistence, graph, stored, name)
     }
 
     private func populate(_ stored: StoredSvg) async -> StoredSvg {
@@ -202,35 +217,13 @@ actor Vendor {
         return stored
     }
 
-    private func loadSvg() -> StoredSvg {
-        do {
-            let request = StoredSvg.fetchRequest()
-            request.predicate = NSPredicate(format: "organization == %@", name)
-
-            let existing = try persistence
-                .container
-                .viewContext
-                .fetch(request)
-                .first
-
-            if let existing {
-                return existing
-            }
-        } catch {
-            // let the outside scope build the default svg
-        }
-
-        let svg = StoredSvg(context: persistence.container.viewContext)
-        svg.organization = name
-
-        return svg
-    }
-
     private func persistPackage(_ package: Innmind.Packagist.Package) -> StoredPackage {
         let storedPackage = StoredPackage(context: persistence.container.viewContext)
         storedPackage.name = String(package.name.dropFirst(name.count + 1))
+        storedPackage.repository = package.repository
         storedPackage.dependencies = StoredSvg(context: persistence.container.viewContext)
         storedPackage.dependents = StoredSvg(context: persistence.container.viewContext)
+        stored.addToPackages(storedPackage)
 
         return storedPackage
     }

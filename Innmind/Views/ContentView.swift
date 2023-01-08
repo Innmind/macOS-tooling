@@ -11,13 +11,8 @@ struct ContentView: View {
     let app: Application
 
     var body: some View {
-        SidebarView(app)
+        WindowView(app: app)
             .frame(minWidth: 600, minHeight: 400)
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(app: .init(.shared, .shared))
-    }
-}

@@ -99,8 +99,3 @@ struct PackageGraphs: View {
     }
 }
 
-struct PackageGraphs_Previews: PreviewProvider {
-    static var previews: some View {
-        PackageGraphs(package: .immutable)
-    }
-}

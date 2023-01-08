@@ -9,8 +9,7 @@ import SwiftUI
 
 @main
 struct InnmindApp: App {
-    let app = Application(.shared, .shared)
-    let vendor = Vendor.innmind
+    let app = Application(.shared, .shared, .shared)
     let persistence = Persistence.shared
 
     var body: some Scene {

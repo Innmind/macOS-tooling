@@ -25,12 +25,12 @@
 		CD5D133F272EADCD00944E3F /* InnmindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D133E272EADCD00944E3F /* InnmindTests.swift */; };
 		CD5D1349272EADCD00944E3F /* InnmindUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D1348272EADCD00944E3F /* InnmindUITests.swift */; };
 		CD5D134B272EADCD00944E3F /* InnmindUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5D134A272EADCD00944E3F /* InnmindUITestsLaunchTests.swift */; };
-		CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9651272EDF6100C5FF56 /* SidebarView.swift */; };
 		CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */; };
 		CD8A9656272EE33000C5FF56 /* VendorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8A9655272EE33000C5FF56 /* VendorView.swift */; };
 		CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8F91B2273EA17A005C9ADA /* Svg.swift */; };
 		CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FFBBF29686C9C00730127 /* HTTP.swift */; };
 		CD9FFBC229687E2900730127 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FFBC129687E2900730127 /* App.swift */; };
+		CDC6C7C12968817800BE6D86 /* WindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6C7C02968817800BE6D86 /* WindowView.swift */; };
 		CDD8E5F629670A610043BFF2 /* Packagist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD8E5F529670A610043BFF2 /* Packagist.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,12 +74,12 @@
 		CD5D1344272EADCD00944E3F /* InnmindUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InnmindUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD5D1348272EADCD00944E3F /* InnmindUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindUITests.swift; sourceTree = "<group>"; };
 		CD5D134A272EADCD00944E3F /* InnmindUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InnmindUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		CD8A9651272EDF6100C5FF56 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageGraphs.swift; sourceTree = "<group>"; };
 		CD8A9655272EE33000C5FF56 /* VendorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorView.swift; sourceTree = "<group>"; };
 		CD8F91B2273EA17A005C9ADA /* Svg.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Svg.swift; sourceTree = "<group>"; };
 		CD9FFBBF29686C9C00730127 /* HTTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTP.swift; sourceTree = "<group>"; };
 		CD9FFBC129687E2900730127 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		CDC6C7C02968817800BE6D86 /* WindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowView.swift; sourceTree = "<group>"; };
 		CDD8E5F529670A610043BFF2 /* Packagist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Packagist.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,13 +205,13 @@
 			isa = PBXGroup;
 			children = (
 				CD5D132E272EADCC00944E3F /* ContentView.swift */,
-				CD8A9651272EDF6100C5FF56 /* SidebarView.swift */,
 				CD8A9653272EE25F00C5FF56 /* PackageGraphs.swift */,
 				CD8A9655272EE33000C5FF56 /* VendorView.swift */,
 				CD127C23272FDA7500CFEBB2 /* SvgView.swift */,
 				CD127C27272FDE4900CFEBB2 /* DependenciesView.swift */,
 				CD127C29272FDEA200CFEBB2 /* DependentsView.swift */,
 				CD46025C2741573E0080B1B3 /* LoadingView.swift */,
+				CDC6C7C02968817800BE6D86 /* WindowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -347,11 +347,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD02460A2740187400C4E1E7 /* Innmind.xcdatamodeld in Sources */,
-				CD8A9652272EDF6100C5FF56 /* SidebarView.swift in Sources */,
 				CD127C2C272FF42800CFEBB2 /* InnmindCommands.swift in Sources */,
 				CD9FFBC229687E2900730127 /* App.swift in Sources */,
 				CD127C24272FDA7500CFEBB2 /* SvgView.swift in Sources */,
 				CD9FFBC029686C9C00730127 /* HTTP.swift in Sources */,
+				CDC6C7C12968817800BE6D86 /* WindowView.swift in Sources */,
 				CD04CB0229672F8C00F941EA /* Vendor.swift in Sources */,
 				CD8F91B3273EA17A005C9ADA /* Svg.swift in Sources */,
 				CD8A9654272EE25F00C5FF56 /* PackageGraphs.swift in Sources */,
@@ -526,6 +526,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Innmind/Innmind.entitlements;
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3;
@@ -558,6 +559,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Innmind/Innmind.entitlements;
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 3;
@@ -598,7 +600,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.innmind.InnmindTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -624,7 +626,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.innmind.InnmindTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
