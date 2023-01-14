@@ -9,17 +9,20 @@ import SwiftUI
 
 struct VendorView: View {
     @Environment(\.openURL) var openUrl
+    @EnvironmentObject var svg: Svg
 
     @State private var zoom: Zoom = .middle
-    @State private var content: Data?
     let vendor: Vendor
 
     var body: some View {
         VStack {
-            if let content {
+            if let content = svg.content {
                 SvgView(content: content, zoom: $zoom)
             } else {
                 LoadingView()
+                    .onAppear {
+                        self.svg.load()
+                    }
             }
         }
         .toolbar {
@@ -38,20 +41,14 @@ struct VendorView: View {
                 Text(Zoom.max.name()).tag(Zoom.max)
             }
                 .pickerStyle(SegmentedPickerStyle())
-                .disabled(self.content == nil)
+                .disabled(self.svg.content == nil)
             Button {
-                content = nil
-                Task {
-                    await vendor.reload()
-                }
+                self.svg.reload()
             } label: {
                 Image(systemName: "arrow.clockwise.circle")
                     .accessibilityLabel("Reload Graph")
             }
-                .disabled(self.content == nil)
-        }
-        .task {
-            self.content = await vendor.svg()
+                .disabled(self.svg.content == nil)
         }
     }
 }

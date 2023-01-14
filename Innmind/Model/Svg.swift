@@ -20,6 +20,17 @@ final class Svg: ObservableObject {
         self.refetch = refetch
     }
 
+    static func vendor(_ vendor: Vendor) -> Svg {
+        return .init(
+            {
+                return await vendor.svg()
+            },
+            {
+                return await vendor.reload()
+            }
+        )
+    }
+
     static func dependencies(_ package: Vendor.Package) -> Svg {
         return .init(
             {

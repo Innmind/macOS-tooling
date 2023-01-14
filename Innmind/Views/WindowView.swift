@@ -188,11 +188,23 @@ struct DisplayTargetSvgView: View {
     @Binding var vendor: Vendor?
     @Binding var package: Vendor.Package?
 
+    private var vendorSvg: Svg?
+
+    init(vendor: Binding<Vendor?>, package: Binding<Vendor.Package?>) {
+        _vendor = vendor
+        _package = package
+
+        if let currentVendor = vendor.wrappedValue {
+            vendorSvg = Svg.vendor(currentVendor)
+        }
+    }
+
     var body: some View {
         if let package {
             PackageGraphs(package: package)
-        } else if let vendor {
+        } else if let vendor, let vendorSvg {
             VendorView(vendor: vendor)
+                .environmentObject(vendorSvg)
         } else {
             EmptyView()
         }
